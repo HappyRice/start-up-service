@@ -7,7 +7,7 @@
     <artifactId>start-up</artifactId>
     <packaging>jar</packaging>
     <name>Start Up</name>
-    <version>1.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -39,6 +39,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
     </build>
     

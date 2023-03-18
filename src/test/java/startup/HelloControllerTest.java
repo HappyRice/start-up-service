@@ -16,8 +16,8 @@ public class HelloControllerTest {
 
     @Test
     public void hello_ok() {
-        ResponseEntity<String> response = template.getForEntity("/", String.class);
-        assertThat(response.getBody()).isEqualTo("Hello World, Spring Boot!");
+        ResponseEntity<String> response = template.getForEntity("/test/even?value=4", String.class);
+        assertThat(response.getBody()).isEqualTo("Value is an even number: true");
     }
 
 }
