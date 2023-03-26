@@ -1,3 +1,3 @@
 #! /bin/sh
 
-docker run -p 8080:9080 start-up-jar:latest
+docker run --platform linux/amd64 -p 8080:9080 start-up-jar:latest
