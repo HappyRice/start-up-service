@@ -1,4 +1,4 @@
-package main.java.startup.common;
+package startup.common;
 
 public class Utils {
 }

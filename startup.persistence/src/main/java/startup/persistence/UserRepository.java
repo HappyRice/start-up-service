@@ -1,4 +1,8 @@
-package main.java.startup.persistence;
+package startup.persistence;
 
-public class UserRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class UserRepository extends BaseRepository {
+
 }
