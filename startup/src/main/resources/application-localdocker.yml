@@ -1,0 +1,8 @@
+server:
+  port: 9080
+
+jdbc:
+  driverClassName: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://host.docker.internal:3306/startup?autoReconnect=true&useSSL=false
+  username: testUser
+  password: testPassword

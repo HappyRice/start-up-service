@@ -13,7 +13,7 @@
         <module>startup.common</module>
         <module>startup.model</module>
         <module>startup.persistence</module>
-        <module>startup.service</module>
+        <module>startup</module>
     </modules>
 
 </project>

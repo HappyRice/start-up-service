@@ -1,11 +1,12 @@
 package startup.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "User")
+@NamedQueries({
+        @NamedQuery(name = "getAllUsers", query = "SELECT user FROM User as user where deletedDate IS NULL")
+})
 public class User extends BaseModel {
 
     @Column

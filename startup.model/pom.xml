@@ -20,12 +20,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>startup</groupId>
             <artifactId>startup-common</artifactId>
             <version>${startup.common.version}</version>
@@ -65,11 +59,6 @@
                         <groupId>org.flywaydb</groupId>
                         <artifactId>flyway-mysql</artifactId>
                         <version>9.16.1</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>8.0.32</version>
                     </dependency>
                 </dependencies>
             </plugin>
