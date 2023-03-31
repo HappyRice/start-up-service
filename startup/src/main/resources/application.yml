@@ -1,5 +1,13 @@
+server:
+  port: 8080
+
 spring:
   main:
     allow-bean-definition-overriding: true
   application:
     name: Startup Service
+
+jdbc:
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: testUser
+  password: testPassword

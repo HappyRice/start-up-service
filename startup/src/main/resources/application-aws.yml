@@ -1,0 +1,3 @@
+jdbc:
+  url: jdbc:mysql://db.startup.com:3306/startup?autoReconnect=true&useSSL=false
+
