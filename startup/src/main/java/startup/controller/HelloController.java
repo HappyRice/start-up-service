@@ -1,14 +1,11 @@
 package startup.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import startup.service.UserService;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 
 import static java.lang.String.format;
 
