@@ -1,0 +1,9 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0-SNAPSHOT"
+  title: "Startup Service"
+host: "startup.com"
+basePath: "/v1/test"
+schemes:
+- "https"
