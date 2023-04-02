@@ -4,6 +4,62 @@ info:
   version: "1.0.0-SNAPSHOT"
   title: "Startup Service"
 host: "startup.com"
-basePath: "/v1/test"
+basePath: "/v1"
+tags:
+- name: "Startup"
 schemes:
 - "https"
+paths:
+  /startup/even:
+    get:
+      tags:
+      - "Startup"
+      summary: "Test for even number"
+      description: "Returns whether the input value is an even number."
+      operationId: "isEvenNumber"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "value"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Number processed"
+          schema:
+            type: "string"
+        400:
+          description: "The request was invalid."
+        500:
+          description: "An internal server error occurred."
+  /startup/users:
+    get:
+      tags:
+      - "Startup"
+      operationId: "getUsers"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+  /startup/users/{id}:
+    get:
+      tags:
+      - "Startup"
+      operationId: "getUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"

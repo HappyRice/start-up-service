@@ -11,6 +11,7 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <parent>
+
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.8.RELEASE</version>
@@ -21,6 +22,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <swagger-maven-plugin-version>3.1.8</swagger-maven-plugin-version>
+        <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
         <springfox-swagger.version>2.9.2</springfox-swagger.version>
         <startup.persistence.version>1.0.0-SNAPSHOT</startup.persistence.version>
     </properties>
@@ -51,13 +53,25 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>${springfox-swagger.version}</version>
+            <version>${springfox-swagger-ui.version}</version>
         </dependency>
 
         <dependency>
             <groupId>startup</groupId>
             <artifactId>startup-persistence</artifactId>
             <version>${startup.persistence.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.14</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
         </dependency>
     </dependencies>
 
@@ -76,15 +90,14 @@
                     <apiSources>
                         <apiSource>
                             <springmvc>true</springmvc>
-                            <locations>startup</locations>
+                            <locations>startup.controller</locations>
                             <schemes>https</schemes>
                             <host>startup.com</host>
-                            <basePath>/v1/test</basePath>
+                            <basePath>/v1</basePath>
                             <info>
                                 <title>Startup Service</title>
                                 <version>${project.version}</version>
                             </info>
-                            <swaggerDirectory>generated/swagger-ui</swaggerDirectory>
                             <outputFormats>yaml</outputFormats>
                             <swaggerDirectory>${project.basedir}/../</swaggerDirectory>
                         </apiSource>
