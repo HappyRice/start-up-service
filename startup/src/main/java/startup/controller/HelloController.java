@@ -8,11 +8,10 @@ import io.swagger.annotations.ApiResponses;
 import org.apache.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import startup.common.dto.UserDto;
 import startup.service.UserService;
 
 import java.io.IOException;
-
-import static java.lang.String.format;
 
 @RestController
 @CrossOrigin
@@ -30,27 +29,30 @@ public class HelloController {
 
     @ApiOperation(
             tags = "Startup",
-            value = "Test for even number",
-            notes = "Returns whether the input value is an even number.",
-            response = String.class)
+            value = "Returns all users along with info",
+            response = UserDto.class,
+            responseContainer = "List")
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.SC_OK, message = "Number processed", response = String.class),
+            @ApiResponse(code = HttpStatus.SC_OK, message = "Users returned successfully", response = UserDto.class),
             @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
     })
-    @RequestMapping(value = "/even", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Object isEvenNumber(@RequestParam String value) {
-        return format("Value is an even number: %s", Integer.parseInt(value) % 2 == 0);
-    }
-
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Object getUsers() throws IOException {
         return MAPPER.writeValueAsString(userService.getAllUsers());
     }
 
+    @ApiOperation(
+            tags = "Startup",
+            value = "Returns info of the given user",
+            response = UserDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.SC_OK, message = "User info successfully returned", response = UserDto.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
+    })
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Object getUser(@PathVariable String id) throws IOException {
-
         return MAPPER.writeValueAsString(userService.getUserDtoById(Integer.parseInt(id)));
     }
 

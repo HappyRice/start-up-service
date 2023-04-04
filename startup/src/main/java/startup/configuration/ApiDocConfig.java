@@ -1,7 +1,9 @@
 package startup.configuration;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +20,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 public class ApiDocConfig {
 
-    public ApiInfo getApiInfo() {
+    private static final Set<String> APPLICATION_JSON = new HashSet<>(Collections.singletonList("application/json"));
+
+    private ApiInfo getApiInfo() {
         return new ApiInfo("Startup Service",
                 "The startup API.",
                 "1.0.0",
@@ -33,6 +37,8 @@ public class ApiDocConfig {
                 .apis(RequestHandlerSelectors.basePackage("startup.controller"))
                 .paths(PathSelectors.any()).build()
                 .apiInfo(this.getApiInfo())
+                .consumes(APPLICATION_JSON)
+                .produces(APPLICATION_JSON)
                 .genericModelSubstitutes(Optional.class);
     }
 

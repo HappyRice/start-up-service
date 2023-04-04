@@ -10,46 +10,31 @@ tags:
 schemes:
 - "https"
 paths:
-  /startup/even:
-    get:
-      tags:
-      - "Startup"
-      summary: "Test for even number"
-      description: "Returns whether the input value is an even number."
-      operationId: "isEvenNumber"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "value"
-        in: "query"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "Number processed"
-          schema:
-            type: "string"
-        400:
-          description: "The request was invalid."
-        500:
-          description: "An internal server error occurred."
   /startup/users:
     get:
       tags:
       - "Startup"
+      summary: "Returns all users along with info"
+      description: ""
       operationId: "getUsers"
       produces:
       - "application/json"
       parameters: []
       responses:
         200:
-          description: "successful operation"
+          description: "Users returned successfully"
           schema:
-            type: "object"
+            $ref: "#/definitions/UserDto"
+        400:
+          description: "The request was invalid."
+        500:
+          description: "An internal server error occurred."
   /startup/users/{id}:
     get:
       tags:
       - "Startup"
+      summary: "Returns info of the given user"
+      description: ""
       operationId: "getUser"
       produces:
       - "application/json"
@@ -60,6 +45,21 @@ paths:
         type: "string"
       responses:
         200:
-          description: "successful operation"
+          description: "User info successfully returned"
           schema:
-            type: "object"
+            $ref: "#/definitions/UserDto"
+        400:
+          description: "The request was invalid."
+        500:
+          description: "An internal server error occurred."
+definitions:
+  UserDto:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      name:
+        type: "string"
+      email:
+        type: "string"
