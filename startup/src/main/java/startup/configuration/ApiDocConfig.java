@@ -27,7 +27,8 @@ public class ApiDocConfig {
                 "The startup API.",
                 "1.0.0",
                 StringUtils.EMPTY,
-                new Contact("Startup", "https://www.startup.com", null), null, null, Collections.EMPTY_LIST);
+                new Contact("Startup", "https://www.startup.com", null), null, null,
+                Collections.singletonList(null));
     }
 
     @Bean

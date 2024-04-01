@@ -2,4 +2,4 @@ server:
   port: 9080
 
 jdbc:
-  url: jdbc:mysql://localhost:3306/startup?autoReconnect=true
+  url: jdbc:mysql://localhost:3306/flips?autoReconnect=true

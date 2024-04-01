@@ -6,60 +6,51 @@ info:
 host: "startup.com"
 basePath: "/v1"
 tags:
-- name: "Startup"
+- name: "Game"
 schemes:
 - "https"
 paths:
-  /startup/users:
-    get:
+  /game:
+    post:
       tags:
-      - "Startup"
-      summary: "Returns all users along with info"
+      - "Game"
+      summary: "Creates a game"
       description: ""
-      operationId: "getUsers"
+      operationId: "createGame"
       produces:
       - "application/json"
       parameters: []
       responses:
         200:
-          description: "Users returned successfully"
+          description: "Game created successfully"
           schema:
-            $ref: "#/definitions/UserDto"
-        400:
-          description: "The request was invalid."
-        500:
-          description: "An internal server error occurred."
-  /startup/users/{id}:
-    get:
-      tags:
-      - "Startup"
-      summary: "Returns info of the given user"
-      description: ""
-      operationId: "getUser"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "path"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "User info successfully returned"
-          schema:
-            $ref: "#/definitions/UserDto"
+            $ref: "#/definitions/GameDto"
         400:
           description: "The request was invalid."
         500:
           description: "An internal server error occurred."
 definitions:
-  UserDto:
+  GameDto:
     type: "object"
     properties:
       id:
         type: "integer"
         format: "int32"
-      name:
+      guid:
         type: "string"
-      email:
+      code:
         type: "string"
+      type:
+        type: "string"
+        enum:
+        - "TEXAS_HOLDEM"
+        - "CRAZY_PINEAPPLE"
+      startDate:
+        type: "string"
+        format: "date-time"
+      endDate:
+        type: "string"
+        format: "date-time"
+      winsRequired:
+        type: "integer"
+        format: "int32"

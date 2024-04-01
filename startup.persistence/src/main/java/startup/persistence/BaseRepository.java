@@ -1,5 +1,6 @@
 package startup.persistence;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,8 @@ public abstract class BaseRepository {
     }
 
     public <T extends BaseModel> T persist(final T entity) {
+        entity.setCreatedDate(LocalDateTime.now());
+        entity.setModifiedDate(LocalDateTime.now());
         this.entityManager.persist(entity);
         return entity;
     }

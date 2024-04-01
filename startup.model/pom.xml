@@ -30,6 +30,12 @@
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.3.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -51,7 +57,7 @@
                     <baselineOnMigrate>true</baselineOnMigrate>
                     <locations>filesystem:db/migration</locations>
                     <user>testUser</user>
-                    <url>jdbc:mysql://localhost:3306/startup</url>
+                    <url>jdbc:mysql://localhost:3306/flips</url>
                     <password>testPassword</password>
                 </configuration>
                 <dependencies>

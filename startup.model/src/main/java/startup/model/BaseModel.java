@@ -64,6 +64,10 @@ public abstract class BaseModel {
         return this.modifiedDate;
     }
 
+    public void setModifiedDate(final LocalDateTime createdDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
     public LocalDateTime getDeletedDate() {
         return this.deletedDate;
     }

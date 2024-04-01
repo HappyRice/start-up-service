@@ -1,6 +1,6 @@
-CREATE DATABASE startup CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE flips CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
-USE startup;
+USE flips;
 
 CREATE USER IF NOT EXISTS 'testUser'@'%' IDENTIFIED BY 'testPassword';
-GRANT ALL PRIVILEGES ON startup.* TO 'testUser'@'%';
+GRANT ALL PRIVILEGES ON flips.* TO 'testUser'@'%';
