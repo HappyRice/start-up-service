@@ -6,11 +6,11 @@ import startup.model.Game;
 public final class GameTransformer {
 
     private GameTransformer() {
-        // prevent instantiation
+        // Prevent Instantiation
     }
 
     public static GameDto buildGameDto(final Game game) {
-        return new GameDto.Builder()
+        return GameDto.builder()
                 .withId(game.getId())
                 .withGuid(game.getGuid())
                 .withCode(game.getCode())

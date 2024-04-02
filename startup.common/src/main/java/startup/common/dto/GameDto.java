@@ -64,6 +64,10 @@ public class GameDto {
         return this.winsRequired;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     @JsonPOJOBuilder
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Builder {
@@ -74,6 +78,10 @@ public class GameDto {
         private LocalDateTime startDate;
         private LocalDateTime endDate;
         private Integer winsRequired;
+
+        private Builder() {
+            // Prevent Instantiation
+        }
 
         public Builder withId(final Integer id) {
             this.id = id;

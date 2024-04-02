@@ -79,12 +79,20 @@ public class Game extends BaseModel {
         this.winsRequired = winsRequired;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static class Builder {
         private String code;
         private GameType type;
         private LocalDateTime startDate;
         private LocalDateTime endDate;
         private Integer winsRequired;
+
+        private Builder() {
+            // Prevent Instantiation
+        }
 
         public Builder withCode(final String code) {
             this.code = code;

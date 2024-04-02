@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS Game
     startDate    DATETIME(3)    ,
     endDate      DATETIME(3)    ,
     type         VARCHAR(255)   NOT NULL,
-    code         VARCHAR(255)   NOT NULL,
+    code         VARCHAR(255)   NOT NULL UNIQUE,
     winsRequired TINYINT(1)     NOT NULL DEFAULT 1
 );
