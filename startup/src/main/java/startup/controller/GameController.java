@@ -6,10 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import startup.common.dto.GameDto;
 import startup.dto.GenericResponseDto;
 import startup.service.GameService;
@@ -22,12 +19,13 @@ public class GameController {
 
     private final GameService gameService;
 
-    public GameController(GameService gameService) {
+    public GameController(final GameService gameService) {
         this.gameService = gameService;
     }
 
     @ApiOperation(
             value = "Creates a new game",
+            httpMethod = "POST",
             response = GenericResponseDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Game created successfully", response = GenericResponseDto.class),
@@ -35,7 +33,7 @@ public class GameController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
     })
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object createGame() {
+    public @ResponseBody Object createGame() {
         final GameDto createdGame = this.gameService.createNewGame();
 
         return GenericResponseDto.builder()

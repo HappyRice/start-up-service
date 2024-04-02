@@ -22,6 +22,10 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
+    public Game getGameByGuid(final String guid) {
+        return this.gameRepository.getGameByGuid(guid);
+    }
+
     @Transactional
     public GameDto createNewGame() {
         LOGGER.info("Creating new game...");

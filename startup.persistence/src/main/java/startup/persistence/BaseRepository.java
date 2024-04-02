@@ -1,18 +1,16 @@
 package startup.persistence;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import startup.model.BaseModel;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-import startup.model.BaseModel;
+import java.util.List;
+import java.util.Map;
 
 public abstract class BaseRepository {
 
@@ -32,8 +30,6 @@ public abstract class BaseRepository {
     }
 
     public <T extends BaseModel> T persist(final T entity) {
-        entity.setCreatedDate(LocalDateTime.now());
-        entity.setModifiedDate(LocalDateTime.now());
         this.entityManager.persist(entity);
         return entity;
     }

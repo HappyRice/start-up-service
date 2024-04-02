@@ -7,6 +7,7 @@ host: "startup.com"
 basePath: "/v1"
 tags:
 - name: "Game"
+- name: "Player"
 schemes:
 - "https"
 paths:
@@ -23,6 +24,33 @@ paths:
       responses:
         200:
           description: "Game created successfully"
+          schema:
+            $ref: "#/definitions/GenericResponseDto"
+        400:
+          description: "The request was invalid."
+        500:
+          description: "An internal server error occurred."
+  /player/{gameGuid}:
+    post:
+      tags:
+      - "Player"
+      summary: "Creates a new player that joins a game"
+      description: ""
+      operationId: "joinGame"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "gameGuid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "playerName"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "New player joined game successfully"
           schema:
             $ref: "#/definitions/GenericResponseDto"
         400:
