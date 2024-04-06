@@ -18,17 +18,11 @@ public enum Rank {
 
     private final String code;
 
-    Rank(String code) {
+    Rank(final String code) {
         this.code = code;
     }
 
-    /**
-     * Returns the name of the rank.
-     *
-     * @see java.lang.Enum#toString()
-     */
-    @Override
-    public String toString() {
+    public String getCode() {
         return code;
     }
 

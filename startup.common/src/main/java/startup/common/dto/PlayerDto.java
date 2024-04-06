@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(builder = PlayerDto.Builder.class)
 public class PlayerDto {
 
@@ -17,7 +17,7 @@ public class PlayerDto {
 
     private final GameDto game;
 
-    private final Integer winCounter;
+    private final int winCounter;
 
     public PlayerDto(final Builder builder) {
         this.id = builder.id;
@@ -43,7 +43,7 @@ public class PlayerDto {
         return this.game;
     }
 
-    public Integer getWinCounter() {
+    public int getWinCounter() {
         return this.winCounter;
     }
 
@@ -58,7 +58,7 @@ public class PlayerDto {
         private String guid;
         private String name;
         private GameDto game;
-        private Integer winCounter;
+        private int winCounter;
 
         private Builder() {
             // Prevent Instantiation
@@ -84,7 +84,7 @@ public class PlayerDto {
             return this;
         }
 
-        public Builder withWinCounter(final Integer winCounter) {
+        public Builder withWinCounter(final int winCounter) {
             this.winCounter = winCounter;
             return this;
         }

@@ -30,7 +30,66 @@ paths:
           description: "The request was invalid."
         500:
           description: "An internal server error occurred."
-  /player/{gameGuid}:
+  /game/sow:
+    post:
+      tags:
+      - "Game"
+      operationId: "sow"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "code"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+  /game/types:
+    get:
+      tags:
+      - "Game"
+      summary: "Returns the list of different game types"
+      description: ""
+      operationId: "getGameTypes"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Game types returned successfully"
+          schema:
+            $ref: "#/definitions/GenericResponseDto"
+        400:
+          description: "The request was invalid."
+        500:
+          description: "An internal server error occurred."
+  /game/{code}/status:
+    get:
+      tags:
+      - "Game"
+      summary: "Returns the status of the given game"
+      description: ""
+      operationId: "getStatus"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "code"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Game status returned successfully"
+          schema:
+            $ref: "#/definitions/GenericResponseDto"
+        400:
+          description: "The request was invalid."
+        500:
+          description: "An internal server error occurred."
+  /player/{code}:
     post:
       tags:
       - "Player"
@@ -40,11 +99,11 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "gameGuid"
+      - name: "code"
         in: "path"
         required: true
         type: "string"
-      - name: "playerName"
+      - name: "name"
         in: "query"
         required: true
         type: "string"
@@ -63,7 +122,7 @@ definitions:
     properties:
       success:
         type: "boolean"
-      identifier:
-        type: "string"
+      entity:
+        type: "object"
       message:
         type: "string"

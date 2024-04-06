@@ -17,4 +17,11 @@ public class GameRepository extends BaseRepository {
 
         return (Game) this.getUniqueResult(query);
     }
+
+    public Game getGameByCode(final String code) {
+        final Query<?> query = this.getNamedQuery("getGameByCode");
+        query.setParameter("code", code);
+
+        return (Game) this.getUniqueResult(query);
+    }
 }

@@ -1,10 +1,7 @@
 package startup.model.enumeration;
 
 import static startup.model.enumeration.Rank.*;
-import static startup.model.enumeration.Suit.CLUBS;
-import static startup.model.enumeration.Suit.DIAMONDS;
-import static startup.model.enumeration.Suit.HEARTS;
-import static startup.model.enumeration.Suit.SPADES;
+import static startup.model.enumeration.Suit.*;
 
 public enum Card {
 
@@ -68,7 +65,7 @@ public enum Card {
     private final Suit suit;
     private final int code;
 
-    Card(Rank rank, Suit suit, int code) {
+    Card(final Rank rank, final Suit suit, final int code) {
         this.rank = rank;
         this.suit = suit;
         this.code = code;
@@ -85,10 +82,4 @@ public enum Card {
     public int getCode() {
         return code;
     }
-
-    @Override
-    public String toString() {
-        return rank.toString() + suit.toString();
-    }
-
 }

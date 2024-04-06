@@ -1,8 +1,6 @@
 package startup.transformer;
 
-import startup.common.dto.GameDto;
 import startup.common.dto.PlayerDto;
-import startup.model.Game;
 import startup.model.Player;
 
 public final class PlayerTransformer {
@@ -17,7 +15,14 @@ public final class PlayerTransformer {
                 .withGuid(player.getGuid())
                 .withName(player.getName())
                 .withWinCounter(player.getWinCounter())
-                .withGame(GameTransformer.buildGameDto(player.getGame()))
+                .build();
+    }
+
+    public static PlayerDto buildSimplePlayerDto(final Player player) {
+        return PlayerDto.builder()
+                .withId(player.getId())
+                .withName(player.getName())
+                .withWinCounter(player.getWinCounter())
                 .build();
     }
 

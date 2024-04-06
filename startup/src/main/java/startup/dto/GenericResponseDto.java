@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import startup.common.dto.GameDto;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonDeserialize(builder = GenericResponseDto.Builder.class)
@@ -12,13 +11,13 @@ public class GenericResponseDto {
 
     private final Boolean success;
 
-    private final String identifier;
+    private final Object entity;
 
     private final String message;
 
     public GenericResponseDto(final Builder builder) {
         this.success = builder.success;
-        this.identifier = builder.identifier;
+        this.entity = builder.entity;
         this.message = builder.message;
     }
 
@@ -26,8 +25,8 @@ public class GenericResponseDto {
         return this.success;
     }
 
-    public String getIdentifier() {
-        return this.identifier;
+    public Object getEntity() {
+        return this.entity;
     }
 
     public String getMessage() {
@@ -42,7 +41,7 @@ public class GenericResponseDto {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Builder {
         private Boolean success;
-        private String identifier;
+        private Object entity;
         private String message;
 
         private Builder(){
@@ -54,8 +53,8 @@ public class GenericResponseDto {
             return this;
         }
 
-        public Builder withIdentifier(final String identifier) {
-            this.identifier = identifier;
+        public Builder withEntity(final Object entity) {
+            this.entity = entity;
             return this;
         }
 

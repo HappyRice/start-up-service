@@ -1,0 +1,34 @@
+body {
+    background: #212121;
+    color: #666;
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+}
+
+.clearfix {
+    clear: both;
+}
+
+#box {
+    width: 750px;
+    height: 450px;
+    overflow: auto;
+    margin: 40px auto;
+    background: #666;
+    padding-bottom: 40px;
+    border-radius: 10px;
+}
+
+#message {
+    background: #333;
+    color: #fff;
+}
+
+footer {
+    display: block;
+    text-align: center;
+    padding-top: 20px;
+}

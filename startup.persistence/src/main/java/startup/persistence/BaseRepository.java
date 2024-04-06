@@ -29,13 +29,17 @@ public abstract class BaseRepository {
         return session;
     }
 
-    public <T extends BaseModel> T persist(final T entity) {
+    public void persist(final Object entity) {
         this.entityManager.persist(entity);
-        return entity;
     }
 
     public <T extends BaseModel> T merge(final T entity) {
         return this.entityManager.merge(entity);
+    }
+
+    public void saveOrUpdate(final Object entity) {
+        final Session session = this.entityManager.unwrap(Session.class);
+        session.saveOrUpdate(entity);
     }
 
     protected void delete(final Object entity) {
@@ -80,9 +84,13 @@ public abstract class BaseRepository {
         return query.list();
     }
 
-    protected Object getUniqueResult(final Query<?> query) {
+    protected Object getUniqueResultWithDeleted(final Query<?> query) {
         this.getSession().disableFilter("notDeleted");
 
+        return query.uniqueResult();
+    }
+
+    protected Object getUniqueResult(final Query<?> query) {
         return query.uniqueResult();
     }
 

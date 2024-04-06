@@ -1,19 +1,12 @@
 package startup.model;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.Filters;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @MappedSuperclass
 @FilterDef(name = "notDeleted")
@@ -64,7 +57,7 @@ public abstract class BaseModel {
         return this.modifiedDate;
     }
 
-    public void setModifiedDate(final LocalDateTime createdDate) {
+    public void setModifiedDate(final LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 

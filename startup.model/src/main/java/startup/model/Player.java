@@ -1,23 +1,26 @@
 package startup.model;
 
+import org.hibernate.annotations.FilterJoinTable;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Player")
 @NamedQueries({
-        @NamedQuery(name = "getPlayerByGuid", query = "SELECT game FROM Game as game where guid = :guid")
+        @NamedQuery(name = "getPlayerByGuid", query = "SELECT player FROM Player as player where guid = :guid")
 })
 public class Player extends BaseModel {
 
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "gameId")
+    @FilterJoinTable(name = "notDeleted", condition = "deletedDate IS NULL")
     private Game game;
 
     @Column
-    private Integer winCounter;
+    private int winCounter;
 
     public Player() {
     }
@@ -44,11 +47,11 @@ public class Player extends BaseModel {
         this.game = game;
     }
 
-    public Integer getWinCounter() {
+    public int getWinCounter() {
         return this.winCounter;
     }
 
-    public void setWinsCounter(final Integer winCounter) {
+    public void setWinsCounter(final int winCounter) {
         this.winCounter = winCounter;
     }
 
@@ -59,7 +62,7 @@ public class Player extends BaseModel {
     public static class Builder {
         private String name;
         private Game game;
-        private Integer winCounter;
+        private int winCounter;
 
         private Builder() {
             // Prevent Instantiation
@@ -75,7 +78,7 @@ public class Player extends BaseModel {
             return this;
         }
 
-        public Builder withWinCounter(final Integer winCounter) {
+        public Builder withWinCounter(final int winCounter) {
             this.winCounter = winCounter;
             return this;
         }

@@ -7,8 +7,10 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import startup.common.enumeration.GameType;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(builder = GameDto.Builder.class)
 public class GameDto {
 
@@ -26,6 +28,8 @@ public class GameDto {
 
     private final Integer winsRequired;
 
+    private final List<PlayerDto> players;
+
     public GameDto(final Builder builder) {
         this.id = builder.id;
         this.guid = builder.guid;
@@ -34,6 +38,7 @@ public class GameDto {
         this.startDate = builder.startDate;
         this.endDate = builder.endDate;
         this.winsRequired = builder.winsRequired;
+        this.players = builder.players != null ? builder.players: new ArrayList<>();
     }
 
     public Integer getId() {
@@ -64,6 +69,10 @@ public class GameDto {
         return this.winsRequired;
     }
 
+    public List<PlayerDto> getPlayers() {
+        return this.players;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -78,6 +87,7 @@ public class GameDto {
         private LocalDateTime startDate;
         private LocalDateTime endDate;
         private Integer winsRequired;
+        private List<PlayerDto> players;
 
         private Builder() {
             // Prevent Instantiation
@@ -115,6 +125,11 @@ public class GameDto {
 
         public Builder withWinsRequired(final Integer winsRequired) {
             this.winsRequired = winsRequired;
+            return this;
+        }
+
+        public Builder withPlayers(final List<PlayerDto> players) {
+            this.players = players;
             return this;
         }
 

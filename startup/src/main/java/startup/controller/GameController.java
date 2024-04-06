@@ -9,7 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import startup.common.dto.GameDto;
 import startup.dto.GenericResponseDto;
+import startup.exception.GameNotFoundException;
 import startup.service.GameService;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -32,15 +36,63 @@ public class GameController {
             @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
     })
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Object createGame() {
         final GameDto createdGame = this.gameService.createNewGame();
 
         return GenericResponseDto.builder()
                 .withSuccess(true)
-                .withIdentifier(createdGame.getGuid())
+                .withEntity(createdGame)
                 .withMessage("The game was successfully created")
                 .build();
     }
 
+    @ApiOperation(
+            value = "Returns the list of different game types",
+            httpMethod = "GET",
+            response = GenericResponseDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.SC_OK, message = "Game types returned successfully", response = GenericResponseDto.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
+    })
+    @GetMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Object getGameTypes() {
+        final List<String> gameTypes = this.gameService.getTypes();
+
+        return GenericResponseDto.builder()
+                .withSuccess(true)
+                .withEntity(gameTypes)
+                .withMessage("Game types successfully returned")
+                .build();
+    }
+
+    @ApiOperation(
+            value = "Returns the status of the given game",
+            httpMethod = "GET",
+            response = GenericResponseDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.SC_OK, message = "Game status returned successfully", response = GenericResponseDto.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
+    })
+    @GetMapping(value = "/{code}/status", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Object getStatus(@PathVariable final String code, final HttpServletResponse response) {
+        try {
+            final GameDto game = this.gameService.getStatus(code);
+
+            return GenericResponseDto.builder()
+                    .withSuccess(true)
+                    .withEntity(game)
+                    .withMessage("Game status successfully returned")
+                    .build();
+        } catch (final GameNotFoundException e) {
+            response.setStatus(HttpStatus.SC_NOT_FOUND);
+
+            return GenericResponseDto.builder()
+                    .withSuccess(false)
+                    .withMessage("Game was not found")
+                    .build();
+        }
+    }
 }

@@ -1,14 +1,18 @@
 package startup.model;
 
+import org.hibernate.annotations.Where;
 import startup.common.enumeration.GameType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Game")
 @NamedQueries({
-        @NamedQuery(name = "getGameByGuid", query = "SELECT game FROM Game as game where guid = :guid")
+        @NamedQuery(name = "getGameByGuid", query = "SELECT game FROM Game as game where guid = :guid"),
+        @NamedQuery(name = "getGameByCode", query = "SELECT game FROM Game as game where code = :code")
 })
 public class Game extends BaseModel {
 
@@ -27,6 +31,10 @@ public class Game extends BaseModel {
 
     @Column
     private Integer winsRequired;
+
+    @OneToMany(mappedBy = "game")
+    @Where(clause = "deletedDate IS NULL")
+    private final List<Player> players = new ArrayList<>();
 
     public Game() {
     }
@@ -77,6 +85,10 @@ public class Game extends BaseModel {
 
     public void setWinsRequired(final Integer winsRequired) {
         this.winsRequired = winsRequired;
+    }
+
+    public List<Player> getPlayers() {
+        return this.players;
     }
 
     public static Builder builder() {

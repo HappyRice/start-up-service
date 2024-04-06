@@ -9,12 +9,11 @@ public enum Suit {
 
     private final String code;
 
-    Suit(String code) {
+    Suit(final String code) {
         this.code = code;
     }
 
-    @Override
-    public String toString() {
+    public String getCode() {
         return code;
     }
 
