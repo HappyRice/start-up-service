@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import startup.common.enumeration.GameType;
+import startup.common.enumeration.GameState;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,35 +14,25 @@ import java.util.List;
 @JsonDeserialize(builder = GameDto.Builder.class)
 public class GameDto {
 
-    private final Integer id;
-
     private final String guid;
 
     private final String code;
 
-    private final GameType type;
+    private final GameState state;
 
-    private final LocalDateTime startDate;
-
-    private final LocalDateTime endDate;
-
-    private final Integer winsRequired;
+    private final LocalDateTime activeDate;
 
     private final List<PlayerDto> players;
 
+    private final GameSettingDto setting;
+
     public GameDto(final Builder builder) {
-        this.id = builder.id;
         this.guid = builder.guid;
         this.code = builder.code;
-        this.type = builder.type;
-        this.startDate = builder.startDate;
-        this.endDate = builder.endDate;
-        this.winsRequired = builder.winsRequired;
+        this.state = builder.state;
+        this.activeDate = builder.activeDate;
         this.players = builder.players != null ? builder.players: new ArrayList<>();
-    }
-
-    public Integer getId() {
-        return this.id;
+        this.setting = builder.setting;
     }
 
     public String getGuid() {
@@ -53,24 +43,20 @@ public class GameDto {
         return this.code;
     }
 
-    public GameType getType() {
-        return this.type;
+    public GameState getState() {
+        return this.state;
     }
 
-    public LocalDateTime getStartDate() {
-        return this.startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return this.endDate;
-    }
-
-    public Integer getWinsRequired() {
-        return this.winsRequired;
+    public LocalDateTime getActiveDate() {
+        return this.activeDate;
     }
 
     public List<PlayerDto> getPlayers() {
         return this.players;
+    }
+
+    public GameSettingDto getSetting() {
+        return this.setting;
     }
 
     public static Builder builder() {
@@ -80,22 +66,15 @@ public class GameDto {
     @JsonPOJOBuilder
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Builder {
-        private Integer id;
         private String guid;
         private String code;
-        private GameType type;
-        private LocalDateTime startDate;
-        private LocalDateTime endDate;
-        private Integer winsRequired;
+        private GameState state;
+        private LocalDateTime activeDate;
         private List<PlayerDto> players;
+        private GameSettingDto setting;
 
         private Builder() {
             // Prevent Instantiation
-        }
-
-        public Builder withId(final Integer id) {
-            this.id = id;
-            return this;
         }
 
         public Builder withGuid(final String guid) {
@@ -108,28 +87,23 @@ public class GameDto {
             return this;
         }
 
-        public Builder withType(final GameType type) {
-            this.type = type;
+        public Builder withState(final GameState state) {
+            this.state = state;
             return this;
         }
 
-        public Builder withStartDate(final LocalDateTime startDate) {
-            this.startDate = startDate;
-            return this;
-        }
-
-        public Builder withEndDate(final LocalDateTime endDate) {
-            this.endDate = endDate;
-            return this;
-        }
-
-        public Builder withWinsRequired(final Integer winsRequired) {
-            this.winsRequired = winsRequired;
+        public Builder withActiveDate(final LocalDateTime activeDate) {
+            this.activeDate = activeDate;
             return this;
         }
 
         public Builder withPlayers(final List<PlayerDto> players) {
             this.players = players;
+            return this;
+        }
+
+        public Builder withSetting(final GameSettingDto setting) {
+            this.setting = setting;
             return this;
         }
 

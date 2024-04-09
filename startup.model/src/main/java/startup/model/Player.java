@@ -14,7 +14,7 @@ public class Player extends BaseModel {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "gameId")
     @FilterJoinTable(name = "notDeleted", condition = "deletedDate IS NULL")
     private Game game;

@@ -2,12 +2,14 @@ package startup.transformer;
 
 import org.junit.Test;
 import startup.common.dto.GameDto;
-import startup.common.enumeration.GameType;
 import startup.model.Game;
+import startup.model.GameSetting;
 import startup.model.Player;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static startup.common.enumeration.GameState.CREATED;
+import static startup.common.enumeration.GameType.TEXAS_HOLDEM;
 
 public class GameTransformerTest {
 
@@ -15,25 +17,35 @@ public class GameTransformerTest {
 	public void testTransformGame() {
 		final Game game = Game.builder()
 				.withCode("ABC123")
-				.withType(GameType.TEXAS_HOLDEM)
-				.withWinsRequired(3)
+				.withState(CREATED)
+				.withSetting(
+						GameSetting.builder()
+								.withGameType(TEXAS_HOLDEM)
+								.withWinsRequired(3)
+								.build()
+				)
 				.build();
 
-		final GameDto gameDto = GameTransformer.buildGameDto(game);
+		final GameDto gameDto = GameTransformer.buildGameDtoWithSettings(game);
 
 		assertEquals("ABC123", gameDto.getCode());
-		assertEquals(GameType.TEXAS_HOLDEM, gameDto.getType());
-		assertEquals(Integer.valueOf(3), gameDto.getWinsRequired());
-		assertNull(gameDto.getStartDate());
-		assertNull(gameDto.getEndDate());
+		assertEquals(CREATED, gameDto.getState());
+		assertEquals(TEXAS_HOLDEM, gameDto.getSetting().getType());
+		assertEquals(Integer.valueOf(3), gameDto.getSetting().getWinsRequired());
+		assertNull(gameDto.getActiveDate());
 	}
 
 	@Test
 	public void testTransformGameWithPlayers() {
 		final Game game = Game.builder()
 				.withCode("ABC123")
-				.withType(GameType.TEXAS_HOLDEM)
-				.withWinsRequired(3)
+				.withState(CREATED)
+				.withSetting(
+						GameSetting.builder()
+								.withGameType(TEXAS_HOLDEM)
+								.withWinsRequired(3)
+								.build()
+				)
 				.build();
 
 		final Player player = Player.builder()
@@ -44,13 +56,12 @@ public class GameTransformerTest {
 
 		game.getPlayers().add(player);
 
-		final GameDto gameDto = GameTransformer.buildGameDtoWithPlayers(game);
+		final GameDto gameDto = GameTransformer.buildGameDtoWithSettingsAndPlayers(game);
 
 		assertEquals("ABC123", gameDto.getCode());
-		assertEquals(GameType.TEXAS_HOLDEM, gameDto.getType());
-		assertEquals(Integer.valueOf(3), gameDto.getWinsRequired());
-		assertNull(gameDto.getStartDate());
-		assertNull(gameDto.getEndDate());
+		assertEquals(TEXAS_HOLDEM, gameDto.getSetting().getType());
+		assertEquals(Integer.valueOf(3), gameDto.getSetting().getWinsRequired());
+		assertNull(gameDto.getActiveDate());
 		assertEquals("Bob", gameDto.getPlayers().get(0).getName());
 		assertEquals(0, gameDto.getPlayers().get(0).getWinCounter());
 	}

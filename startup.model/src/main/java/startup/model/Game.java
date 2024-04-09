@@ -1,7 +1,7 @@
 package startup.model;
 
 import org.hibernate.annotations.Where;
-import startup.common.enumeration.GameType;
+import startup.common.enumeration.GameState;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,32 +19,35 @@ public class Game extends BaseModel {
     @Column(nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @Column
+    private LocalDateTime activeDate;
+
+    @Column
     @Enumerated(value = EnumType.STRING)
-    private GameType type;
+    private GameState state;
 
-    @Column
-    private LocalDateTime startDate;
+    @OneToOne
+    @JoinColumn(name = "winnerId")
+    private Player winner;
 
-    @Column
-    private LocalDateTime endDate;
-
-    @Column
-    private Integer winsRequired;
-
-    @OneToMany(mappedBy = "game")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     @Where(clause = "deletedDate IS NULL")
-    private final List<Player> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "game")
+    @Where(clause = "deletedDate IS NULL")
+    private GameSetting setting;
 
     public Game() {
     }
 
     public Game(final Builder builder) {
         this.code = builder.code;
-        this.type = builder.type;
-        this.startDate = builder.startDate;
-        this.endDate = builder.endDate;
-        this.winsRequired = builder.winsRequired;
+        this.activeDate = builder.activeDate;
+        this.state = builder.state;
+        this.winner = builder.winner;
+        this.players = builder.players != null ? builder.players : new ArrayList<>();
+        this.setting = builder.setting;
     }
 
     public String getCode() {
@@ -55,40 +58,36 @@ public class Game extends BaseModel {
         this.code = code;
     }
 
-    public GameType getType() {
-        return this.type;
+    public LocalDateTime getActiveDate() {
+        return this.activeDate;
     }
 
-    public void setType(final GameType type) {
-        this.type = type;
+    public void setActiveDate(final LocalDateTime activeDate) {
+        this.activeDate = activeDate;
     }
 
-    public LocalDateTime getStartDate() {
-        return this.startDate;
+    public GameState getState() {
+        return this.state;
     }
 
-    public void setStartDate(final LocalDateTime startDate) {
-        this.startDate = startDate;
+    public void setState(final GameState state) {
+        this.state = state;
     }
 
-    public LocalDateTime getEndDate() {
-        return this.endDate;
+    public Player getWinner() {
+        return this.winner;
     }
 
-    public void setEndDate(final LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-
-    public Integer getWinsRequired() {
-        return this.winsRequired;
-    }
-
-    public void setWinsRequired(final Integer winsRequired) {
-        this.winsRequired = winsRequired;
+    public void setWinner(final Player winner) {
+        this.winner = winner;
     }
 
     public List<Player> getPlayers() {
         return this.players;
+    }
+
+    public GameSetting getSetting() {
+        return this.setting;
     }
 
     public static Builder builder() {
@@ -97,10 +96,11 @@ public class Game extends BaseModel {
 
     public static class Builder {
         private String code;
-        private GameType type;
-        private LocalDateTime startDate;
-        private LocalDateTime endDate;
-        private Integer winsRequired;
+        private LocalDateTime activeDate;
+        private GameState state;
+        private Player winner;
+        private List<Player> players;
+        private GameSetting setting;
 
         private Builder() {
             // Prevent Instantiation
@@ -111,23 +111,28 @@ public class Game extends BaseModel {
             return this;
         }
 
-        public Builder withType(final GameType type) {
-            this.type = type;
+        public Builder withActiveDate(final LocalDateTime activeDate) {
+            this.activeDate = activeDate;
             return this;
         }
 
-        public Builder withStartDate(final LocalDateTime startDate) {
-            this.startDate = startDate;
+        public Builder withState(final GameState state) {
+            this.state = state;
             return this;
         }
 
-        public Builder withEndDate(final LocalDateTime endDate) {
-            this.endDate = endDate;
+        public Builder withWinner(final Player winner) {
+            this.winner = winner;
             return this;
         }
 
-        public Builder withWinsRequired(final Integer winsRequired) {
-            this.winsRequired = winsRequired;
+        public Builder withPlayers(final List<Player> players) {
+            this.players = players;
+            return this;
+        }
+
+        public Builder withSetting(final GameSetting setting) {
+            this.setting = setting;
             return this;
         }
 

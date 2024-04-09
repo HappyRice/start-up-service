@@ -17,7 +17,7 @@ public abstract class BaseModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private final String guid = UUID.randomUUID().toString();
 
     @Column(nullable = false)

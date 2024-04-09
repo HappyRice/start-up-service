@@ -16,7 +16,7 @@ function connectToSocket(gameId) {
             let data = JSON.parse(response.body);
             console.log('Game state received');
             console.log(data);
-            //refreshGameBoard(data);
+            $('.winsRequired').text('Wins Required: ' + data.winsRequired);
         })
     })
 }

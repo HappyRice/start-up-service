@@ -9,5 +9,5 @@ CREATE TABLE IF NOT EXISTS Player
     name         VARCHAR(128)   NOT NULL,
     gameId       INT(11)        NOT NULL,
     winCounter   TINYINT(1)     NOT NULL DEFAULT 0,
-    CONSTRAINT FK_GameId FOREIGN KEY (gameId) REFERENCES Game(id)
+    CONSTRAINT FK_Player_Game_Id FOREIGN KEY (gameId) REFERENCES Game(id)
 );

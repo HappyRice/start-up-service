@@ -11,27 +11,23 @@ public final class GameTransformer {
         // Prevent Instantiation
     }
 
-    public static GameDto buildGameDtoWithPlayers(final Game game) {
+    public static GameDto buildGameDtoWithSettingsAndPlayers(final Game game) {
         return GameDto.builder()
-                .withId(game.getId())
                 .withCode(game.getCode())
-                .withType(game.getType())
-                .withStartDate(game.getStartDate())
-                .withEndDate(game.getEndDate())
-                .withWinsRequired(game.getWinsRequired())
+                .withState(game.getState())
+                .withSetting(GameSettingTransformer.buildGameSettingDto(game.getSetting()))
+                .withActiveDate(game.getActiveDate())
                 .withPlayers(game.getPlayers().stream().map(PlayerTransformer::buildSimplePlayerDto).collect(Collectors.toList()))
                 .build();
     }
 
-    public static GameDto buildGameDto(final Game game) {
+    public static GameDto buildGameDtoWithSettings(final Game game) {
         return GameDto.builder()
-                .withId(game.getId())
                 .withGuid(game.getGuid())
                 .withCode(game.getCode())
-                .withType(game.getType())
-                .withStartDate(game.getStartDate())
-                .withEndDate(game.getEndDate())
-                .withWinsRequired(game.getWinsRequired())
+                .withState(game.getState())
+                .withSetting(GameSettingTransformer.buildGameSettingDto(game.getSetting()))
+                .withActiveDate(game.getActiveDate())
                 .build();
     }
 

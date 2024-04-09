@@ -30,23 +30,6 @@ paths:
           description: "The request was invalid."
         500:
           description: "An internal server error occurred."
-  /game/sow:
-    post:
-      tags:
-      - "Game"
-      operationId: "sow"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "code"
-        in: "query"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "object"
   /game/types:
     get:
       tags:
@@ -83,6 +66,29 @@ paths:
       responses:
         200:
           description: "Game status returned successfully"
+          schema:
+            $ref: "#/definitions/GenericResponseDto"
+        400:
+          description: "The request was invalid."
+        500:
+          description: "An internal server error occurred."
+  /player/start:
+    post:
+      tags:
+      - "Player"
+      summary: "Makes a move"
+      description: ""
+      operationId: "sow"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "playerId"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Made the move successfully"
           schema:
             $ref: "#/definitions/GenericResponseDto"
         400:

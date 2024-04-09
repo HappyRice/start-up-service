@@ -1,0 +1,1 @@
+ALTER TABLE Game ADD CONSTRAINT FK_Game_Player_Id FOREIGN KEY (winnerId) REFERENCES Player(id);

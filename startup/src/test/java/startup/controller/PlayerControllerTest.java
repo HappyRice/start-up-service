@@ -23,6 +23,7 @@ import startup.service.GameService;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
+import static startup.common.enumeration.GameState.CREATED;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -50,7 +51,7 @@ public class PlayerControllerTest {
 				"}";
 
 		// Mock
-		when(this.gameService.getGameByCode("ABC123")).thenReturn(Game.builder().build());
+		when(this.gameService.getGameByCode("ABC123")).thenReturn(Game.builder().withState(CREATED).build());
 
 		// When
 		final ResponseEntity<String> response = this.restTemplate.exchange(PLAYER_PATH + "/ABC123?name=John",

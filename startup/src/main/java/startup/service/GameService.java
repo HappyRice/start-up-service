@@ -9,12 +9,16 @@ import startup.common.dto.GameDto;
 import startup.common.enumeration.GameType;
 import startup.exception.GameNotFoundException;
 import startup.model.Game;
+import startup.model.GameSetting;
 import startup.persistence.GameRepository;
 import startup.transformer.GameTransformer;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static startup.common.enumeration.GameState.CREATED;
+import static startup.common.enumeration.GameType.TEXAS_HOLDEM;
 
 @Service
 public class GameService {
@@ -40,14 +44,19 @@ public class GameService {
         LOGGER.info("Creating new game...");
 
         final Game game = Game.builder()
-                .withType(GameType.TEXAS_HOLDEM)
+                .withSetting(
+                        GameSetting.builder()
+                                .withGameType(TEXAS_HOLDEM)
+                                .withWinsRequired(1)
+                                .build()
+                )
                 .withCode(RandomStringUtils.random(25, true, true))
-                .withWinsRequired(1)
+                .withState(CREATED)
                 .build();
 
         this.gameRepository.persist(game);
 
-        return GameTransformer.buildGameDto(game);
+        return GameTransformer.buildGameDtoWithSettings(game);
     }
 
     public GameDto getStatus(final String code) throws GameNotFoundException {
@@ -55,12 +64,12 @@ public class GameService {
 
         final Game game = this.getGameByCode(code);
 
-        if (game == null || game.getStartDate() != null) {
+        if (game == null) {
             LOGGER.warn("No game found for code: [{}]", code);
             throw new GameNotFoundException();
         }
 
-        return GameTransformer.buildGameDtoWithPlayers(game);
+        return GameTransformer.buildGameDtoWithSettingsAndPlayers(game);
     }
 
     public List<String> getTypes() {

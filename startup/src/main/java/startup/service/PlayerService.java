@@ -13,6 +13,8 @@ import startup.persistence.PlayerRepository;
 import startup.transformer.GameTransformer;
 import startup.transformer.PlayerTransformer;
 
+import static startup.common.enumeration.GameState.CREATED;
+
 @Service
 public class PlayerService {
 
@@ -36,8 +38,8 @@ public class PlayerService {
 
         final Game game = this.gameService.getGameByCode(code);
 
-        if (game == null || game.getStartDate() != null) {
-            LOGGER.warn("No ready game found for code: [{}]", code);
+        if (game == null || game.getState() != CREATED) {
+            LOGGER.warn("No game found in CREATED status for code: [{}]", code);
             throw new GameNotFoundException();
         }
 
@@ -56,8 +58,8 @@ public class PlayerService {
     public GameDto start(final String playerGuid) {
         final Player player = this.getPlayerByGuid(playerGuid);
         final Game game = player.getGame();
-        game.setWinsRequired(game.getWinsRequired() + 1);
+        game.getSetting().setWinsRequired(game.getSetting().getWinsRequired() + 1);
 
-        return GameTransformer.buildGameDtoWithPlayers(player.getGame());
+        return GameTransformer.buildGameDtoWithSettingsAndPlayers(player.getGame());
     }
 }
