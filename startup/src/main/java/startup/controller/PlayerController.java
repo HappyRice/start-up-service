@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/player")
+@RequestMapping("/players")
 @Api(tags = "Player")
 public class PlayerController {
 

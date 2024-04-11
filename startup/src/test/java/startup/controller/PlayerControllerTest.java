@@ -30,7 +30,7 @@ import static startup.common.enumeration.GameState.CREATED;
 @AutoConfigureTestDatabase
 public class PlayerControllerTest {
 
-	private static final String PLAYER_PATH = "/player";
+	private static final String PLAYER_PATH = "/players";
 
 	@Autowired
 	private TestRestTemplate restTemplate;

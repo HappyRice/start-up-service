@@ -92,6 +92,10 @@ public class Hand extends BaseModel {
         return this.playerHands;
     }
 
+    public void setPlayerHands(final List<PlayerHand> playerHands) {
+        this.playerHands = playerHands;
+    }
+
     public static Builder builder() {
         return new Builder();
     }

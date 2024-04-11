@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNotNull;
 @AutoConfigureTestDatabase
 public class GameControllerTest {
 
-	private static final String GAME_PATH = "/game";
+	private static final String GAME_PATH = "/games";
 
 	@Autowired
 	private TestRestTemplate restTemplate;

@@ -11,7 +11,7 @@ tags:
 schemes:
 - "https"
 paths:
-  /game:
+  /games:
     post:
       tags:
       - "Game"
@@ -30,7 +30,7 @@ paths:
           description: "The request was invalid."
         500:
           description: "An internal server error occurred."
-  /game/types:
+  /games/types:
     get:
       tags:
       - "Game"
@@ -49,7 +49,7 @@ paths:
           description: "The request was invalid."
         500:
           description: "An internal server error occurred."
-  /game/{code}/status:
+  /games/{code}/status:
     get:
       tags:
       - "Game"
@@ -72,7 +72,30 @@ paths:
           description: "The request was invalid."
         500:
           description: "An internal server error occurred."
-  /player/start:
+  /games/{gameGuid}:
+    post:
+      tags:
+      - "Game"
+      summary: "Starts a game"
+      description: ""
+      operationId: "startGame"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "gameGuid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Game started successfully"
+          schema:
+            $ref: "#/definitions/GenericResponseDto"
+        400:
+          description: "The request was invalid."
+        500:
+          description: "An internal server error occurred."
+  /players/start:
     post:
       tags:
       - "Player"
@@ -95,7 +118,7 @@ paths:
           description: "The request was invalid."
         500:
           description: "An internal server error occurred."
-  /player/{code}:
+  /players/{code}:
     post:
       tags:
       - "Player"

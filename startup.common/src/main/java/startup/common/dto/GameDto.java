@@ -26,6 +26,8 @@ public class GameDto {
 
     private final GameSettingDto setting;
 
+    private final HandDto currentHand;
+
     public GameDto(final Builder builder) {
         this.guid = builder.guid;
         this.code = builder.code;
@@ -33,6 +35,7 @@ public class GameDto {
         this.activeDate = builder.activeDate;
         this.players = builder.players != null ? builder.players: new ArrayList<>();
         this.setting = builder.setting;
+        this.currentHand = builder.currentHand;
     }
 
     public String getGuid() {
@@ -59,6 +62,10 @@ public class GameDto {
         return this.setting;
     }
 
+    public HandDto getCurrentHand() {
+        return this.currentHand;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -72,6 +79,7 @@ public class GameDto {
         private LocalDateTime activeDate;
         private List<PlayerDto> players;
         private GameSettingDto setting;
+        private HandDto currentHand;
 
         private Builder() {
             // Prevent Instantiation
@@ -104,6 +112,11 @@ public class GameDto {
 
         public Builder withSetting(final GameSettingDto setting) {
             this.setting = setting;
+            return this;
+        }
+
+        public Builder withCurrentHand(final HandDto currentHand) {
+            this.currentHand = currentHand;
             return this;
         }
 

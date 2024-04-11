@@ -1,0 +1,1 @@
+ALTER TABLE Game ADD CONSTRAINT FK_Game_Hand_Id FOREIGN KEY (currentHandId) REFERENCES Hand(id);

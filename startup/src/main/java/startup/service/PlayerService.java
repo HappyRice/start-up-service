@@ -33,7 +33,7 @@ public class PlayerService {
     }
 
     @Transactional
-    public PlayerDto joinGame(final String code, final String name) throws GameNotFoundException{
+    public PlayerDto joinGame(final String code, final String name) throws GameNotFoundException {
         LOGGER.info("Creating new player to join game with code: [{}]...", code);
 
         final Game game = this.gameService.getGameByCode(code);
@@ -60,6 +60,6 @@ public class PlayerService {
         final Game game = player.getGame();
         game.getSetting().setWinsRequired(game.getSetting().getWinsRequired() + 1);
 
-        return GameTransformer.buildGameDtoWithSettingsAndPlayers(player.getGame());
+        return GameTransformer.buildGameDtoWithPlayersAndHand(player.getGame());
     }
 }

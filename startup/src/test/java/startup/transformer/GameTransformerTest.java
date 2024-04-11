@@ -26,7 +26,7 @@ public class GameTransformerTest {
 				)
 				.build();
 
-		final GameDto gameDto = GameTransformer.buildGameDtoWithSettings(game);
+		final GameDto gameDto = GameTransformer.buildGameDto(game);
 
 		assertEquals("ABC123", gameDto.getCode());
 		assertEquals(CREATED, gameDto.getState());
@@ -56,12 +56,13 @@ public class GameTransformerTest {
 
 		game.getPlayers().add(player);
 
-		final GameDto gameDto = GameTransformer.buildGameDtoWithSettingsAndPlayers(game);
+		final GameDto gameDto = GameTransformer.buildGameDtoWithPlayersAndHand(game);
 
 		assertEquals("ABC123", gameDto.getCode());
 		assertEquals(TEXAS_HOLDEM, gameDto.getSetting().getType());
 		assertEquals(Integer.valueOf(3), gameDto.getSetting().getWinsRequired());
 		assertNull(gameDto.getActiveDate());
+		assertNull(gameDto.getCurrentHand());
 		assertEquals("Bob", gameDto.getPlayers().get(0).getName());
 		assertEquals(0, gameDto.getPlayers().get(0).getWinCounter());
 	}

@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS Hand
     gameId       INT(11)        NOT NULL,
     state        VARCHAR(255)   NOT NULL,
     winnerId     INT(11)        ,
-    deck         VARCHAR(255)   NOT NULL,
     CONSTRAINT FK_Hand_Game_Id FOREIGN KEY (gameId) REFERENCES Game(id),
     CONSTRAINT FK_Hand_Player_Id FOREIGN KEY (winnerId) REFERENCES Player(id)
 );

@@ -38,6 +38,10 @@ public class Game extends BaseModel {
     @Where(clause = "deletedDate IS NULL")
     private GameSetting setting;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "currentHandId")
+    private Hand currentHand;
+
     public Game() {
     }
 
@@ -48,6 +52,7 @@ public class Game extends BaseModel {
         this.winner = builder.winner;
         this.players = builder.players != null ? builder.players : new ArrayList<>();
         this.setting = builder.setting;
+        this.currentHand = builder.currentHand;
     }
 
     public String getCode() {
@@ -90,6 +95,14 @@ public class Game extends BaseModel {
         return this.setting;
     }
 
+    public Hand getCurrentHand() {
+        return this.currentHand;
+    }
+
+    public void setCurrentHand(final Hand currentHand) {
+        this.currentHand = currentHand;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -101,6 +114,7 @@ public class Game extends BaseModel {
         private Player winner;
         private List<Player> players;
         private GameSetting setting;
+        private Hand currentHand;
 
         private Builder() {
             // Prevent Instantiation
@@ -133,6 +147,11 @@ public class Game extends BaseModel {
 
         public Builder withSetting(final GameSetting setting) {
             this.setting = setting;
+            return this;
+        }
+
+        public Builder withCurrentHand(final Hand currentHand) {
+            this.currentHand = currentHand;
             return this;
         }
 
