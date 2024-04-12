@@ -56,7 +56,7 @@ public class GameController {
             @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
     })
-    @GetMapping(value = {"/types", "/foo"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Object getGameTypes() {
         final List<String> gameTypes = this.gameService.getTypes();
 
@@ -98,14 +98,14 @@ public class GameController {
 
     @ApiOperation(
             value = "Starts a game",
-            httpMethod = "POST",
+            httpMethod = "PUT",
             response = GenericResponseDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Game started successfully", response = GenericResponseDto.class),
             @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
     })
-    @PostMapping(value = "/{gameGuid}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{gameGuid}",produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Object startGame(@PathVariable final String gameGuid, final HttpServletResponse response) {
         try {
             final GameDto game = this.gameService.startGame(gameGuid);

@@ -1,7 +1,7 @@
-package startup.model.enumeration;
+package startup.common.enumeration;
 
-import static startup.model.enumeration.Rank.*;
-import static startup.model.enumeration.Suit.*;
+import static startup.common.enumeration.Rank.*;
+import static startup.common.enumeration.Suit.*;
 
 public enum Card {
 

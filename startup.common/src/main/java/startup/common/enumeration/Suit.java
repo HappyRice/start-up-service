@@ -1,4 +1,4 @@
-package startup.model.enumeration;
+package startup.common.enumeration;
 
 public enum Suit {
 

@@ -13,6 +13,7 @@ public final class HandTransformer {
         if (hand != null) {
             return HandDto.builder()
                     .withState(hand.getState())
+                    .withBoard(BoardTransformer.buildBoardDto(hand.getBoard()))
                     .build();
         } else {
             return null;

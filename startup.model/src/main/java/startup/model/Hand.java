@@ -2,8 +2,8 @@ package startup.model;
 
 import org.hibernate.annotations.FilterJoinTable;
 import org.hibernate.annotations.Where;
+import startup.common.enumeration.Card;
 import startup.common.enumeration.HandState;
-import startup.model.enumeration.Card;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "Hand")
+@NamedQueries({
+        @NamedQuery(name = "getHandByGuid", query = "SELECT hand FROM Hand as hand where guid = :guid")
+})
 public class Hand extends BaseModel {
 
     @OneToOne
@@ -86,6 +89,10 @@ public class Hand extends BaseModel {
 
     public Board getBoard() {
         return this.board;
+    }
+
+    public void setBoard(final Board board) {
+        this.board = board;
     }
 
     public List<PlayerHand> getPlayerHands() {

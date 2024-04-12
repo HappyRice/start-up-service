@@ -28,13 +28,10 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
-    private final HandService handService;
-
     private static final Logger LOGGER = LogManager.getLogger(GameService.class);
 
-    public GameService(final GameRepository gameRepository, final HandService handService) {
+    public GameService(final GameRepository gameRepository) {
         this.gameRepository = gameRepository;
-        this.handService = handService;
     }
 
     public Game getGameByGuid(final String guid) {
@@ -43,6 +40,10 @@ public class GameService {
 
     public Game getGameByCode(final String code) {
         return this.gameRepository.getGameByCode(code);
+    }
+
+    public void saveGame(final Game game) {
+        this.gameRepository.persist(game);
     }
 
     @Transactional
@@ -79,8 +80,6 @@ public class GameService {
 
         game.setState(IN_PROGRESS);
         game.setActiveDate(LocalDateTime.now());
-
-        this.handService.createNewHand(game);
 
         this.gameRepository.persist(game);
 

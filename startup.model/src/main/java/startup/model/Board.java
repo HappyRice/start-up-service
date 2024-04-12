@@ -1,7 +1,7 @@
 package startup.model;
 
 import org.hibernate.annotations.FilterJoinTable;
-import startup.model.enumeration.Card;
+import startup.common.enumeration.Card;
 
 import javax.persistence.*;
 
