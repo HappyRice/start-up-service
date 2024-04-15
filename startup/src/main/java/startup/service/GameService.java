@@ -14,7 +14,6 @@ import startup.persistence.GameRepository;
 import startup.transformer.GameTransformer;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -102,14 +101,4 @@ public class GameService {
     public List<String> getTypes() {
         return Arrays.stream(GameType.values()).map(GameType::getDescription).collect(Collectors.toList());
     }
-
-    public void foo (final List<String> data) {
-
-    }
-
-    public void foo (final ArrayList<Integer> data) {
-
-    }
-
-
 }
