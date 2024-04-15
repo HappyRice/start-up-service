@@ -1,6 +1,5 @@
 package startup.utility;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -10,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -23,8 +23,7 @@ public class ErrorHandlingControllerAdvice {
 
 	@ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody
-    ErrorResponse onMethodArgumentNotValidException(final Exception e) {
+	@ResponseBody public ErrorResponse onMethodArgumentNotValidException(final Exception e) {
 		final BindingResult bindingResult;
 
 		if (e instanceof MethodArgumentNotValidException) {
@@ -42,10 +41,10 @@ public class ErrorHandlingControllerAdvice {
 		return ErrorResponse.builder().withMessage(stringBuilder.toString()).build();
 	}
 
-	@ExceptionHandler(JsonProcessingException.class)
+	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody public ErrorResponse onJsonProcessingException() {
-		return ErrorResponse.builder().withMessage("Invalid JSON").build();
+	@ResponseBody public ErrorResponse onMissingServletRequestParameterException(final MissingServletRequestParameterException e) {
+		return ErrorResponse.builder().withMessage("Missing request parameter: " + e.getParameterName()).build();
 	}
 
 	@ExceptionHandler(HttpMediaTypeException.class)
