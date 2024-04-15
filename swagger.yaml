@@ -26,11 +26,15 @@ paths:
         200:
           description: "Game created successfully"
           schema:
-            $ref: "#/definitions/GenericResponseDto"
+            $ref: "#/definitions/GameDto"
         400:
           description: "The request was invalid."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         500:
           description: "An internal server error occurred."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /games/types:
     get:
       tags:
@@ -45,11 +49,17 @@ paths:
         200:
           description: "Game types returned successfully"
           schema:
-            $ref: "#/definitions/GenericResponseDto"
+            type: "array"
+            items:
+              type: "string"
         400:
           description: "The request was invalid."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         500:
           description: "An internal server error occurred."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /games/{code}/status:
     get:
       tags:
@@ -68,34 +78,19 @@ paths:
         200:
           description: "Game status returned successfully"
           schema:
-            $ref: "#/definitions/GenericResponseDto"
+            $ref: "#/definitions/GameDto"
         400:
           description: "The request was invalid."
-        500:
-          description: "An internal server error occurred."
-  /games/{gameGuid}:
-    put:
-      tags:
-      - "Game"
-      summary: "Starts a game"
-      description: ""
-      operationId: "startGame"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "gameGuid"
-        in: "path"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "Game started successfully"
           schema:
-            $ref: "#/definitions/GenericResponseDto"
-        400:
-          description: "The request was invalid."
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The game was not found."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         500:
           description: "An internal server error occurred."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /hands:
     post:
       tags:
@@ -114,11 +109,19 @@ paths:
         200:
           description: "New hand created successfully"
           schema:
-            $ref: "#/definitions/GenericResponseDto"
+            $ref: "#/definitions/HandDto"
         400:
           description: "The request was invalid."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The game was not found."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         500:
           description: "An internal server error occurred."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /hands/{handGuid}/flop:
     post:
       tags:
@@ -137,16 +140,86 @@ paths:
         200:
           description: "Flop created successfully"
           schema:
-            $ref: "#/definitions/GenericResponseDto"
+            $ref: "#/definitions/HandDto"
         400:
           description: "The request was invalid."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The hand was not found."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         500:
           description: "An internal server error occurred."
-  /players/start:
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /hands/{handGuid}/river:
+    post:
+      tags:
+      - "Hand"
+      summary: "Creates the river for a hand"
+      description: ""
+      operationId: "createRiver"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "handGuid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "River created successfully"
+          schema:
+            $ref: "#/definitions/HandDto"
+        400:
+          description: "The request was invalid."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The hand was not found."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "An internal server error occurred."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /hands/{handGuid}/turn:
+    post:
+      tags:
+      - "Hand"
+      summary: "Creates the turn for a hand"
+      description: ""
+      operationId: "createTurn"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "handGuid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Turn created successfully"
+          schema:
+            $ref: "#/definitions/HandDto"
+        400:
+          description: "The request was invalid."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The hand was not found."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "An internal server error occurred."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /players/test:
     post:
       tags:
       - "Player"
-      summary: "Makes a move"
+      summary: "Test"
       description: ""
       operationId: "sow"
       produces:
@@ -158,9 +231,9 @@ paths:
         type: "string"
       responses:
         200:
-          description: "Made the move successfully"
+          description: "Test successfully"
           schema:
-            $ref: "#/definitions/GenericResponseDto"
+            $ref: "#/definitions/GameDto"
         400:
           description: "The request was invalid."
         500:
@@ -179,26 +252,374 @@ paths:
         in: "path"
         required: true
         type: "string"
-      - name: "name"
-        in: "query"
-        required: true
-        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/JoinGameRequest"
       responses:
         200:
           description: "New player joined game successfully"
           schema:
-            $ref: "#/definitions/GenericResponseDto"
+            $ref: "#/definitions/PlayerDto"
         400:
           description: "The request was invalid."
         500:
           description: "An internal server error occurred."
 definitions:
-  GenericResponseDto:
+  BoardDto:
+    type: "object"
+    properties:
+      flop1:
+        type: "string"
+        enum:
+        - "TWO_OF_CLUBS"
+        - "THREE_OF_CLUBS"
+        - "FOUR_OF_CLUBS"
+        - "FIVE_OF_CLUBS"
+        - "SIX_OF_CLUBS"
+        - "SEVEN_OF_CLUBS"
+        - "EIGHT_OF_CLUBS"
+        - "NINE_OF_CLUBS"
+        - "TEN_OF_CLUBS"
+        - "JACK_OF_CLUBS"
+        - "QUEEN_OF_CLUBS"
+        - "KING_OF_CLUBS"
+        - "ACE_OF_CLUBS"
+        - "TWO_OF_DIAMONDS"
+        - "THREE_OF_DIAMONDS"
+        - "FOUR_OF_DIAMONDS"
+        - "FIVE_OF_DIAMONDS"
+        - "SIX_OF_DIAMONDS"
+        - "SEVEN_OF_DIAMONDS"
+        - "EIGHT_OF_DIAMONDS"
+        - "NINE_OF_DIAMONDS"
+        - "TEN_OF_DIAMONDS"
+        - "JACK_OF_DIAMONDS"
+        - "QUEEN_OF_DIAMONDS"
+        - "KING_OF_DIAMONDS"
+        - "ACE_OF_DIAMONDS"
+        - "TWO_OF_HEARTS"
+        - "THREE_OF_HEARTS"
+        - "FOUR_OF_HEARTS"
+        - "FIVE_OF_HEARTS"
+        - "SIX_OF_HEARTS"
+        - "SEVEN_OF_HEARTS"
+        - "EIGHT_OF_HEARTS"
+        - "NINE_OF_HEARTS"
+        - "TEN_OF_HEARTS"
+        - "JACK_OF_HEARTS"
+        - "QUEEN_OF_HEARTS"
+        - "KING_OF_HEARTS"
+        - "ACE_OF_HEARTS"
+        - "TWO_OF_SPADES"
+        - "THREE_OF_SPADES"
+        - "FOUR_OF_SPADES"
+        - "FIVE_OF_SPADES"
+        - "SIX_OF_SPADES"
+        - "SEVEN_OF_SPADES"
+        - "EIGHT_OF_SPADES"
+        - "NINE_OF_SPADES"
+        - "TEN_OF_SPADES"
+        - "JACK_OF_SPADES"
+        - "QUEEN_OF_SPADES"
+        - "KING_OF_SPADES"
+        - "ACE_OF_SPADES"
+      flop2:
+        type: "string"
+        enum:
+        - "TWO_OF_CLUBS"
+        - "THREE_OF_CLUBS"
+        - "FOUR_OF_CLUBS"
+        - "FIVE_OF_CLUBS"
+        - "SIX_OF_CLUBS"
+        - "SEVEN_OF_CLUBS"
+        - "EIGHT_OF_CLUBS"
+        - "NINE_OF_CLUBS"
+        - "TEN_OF_CLUBS"
+        - "JACK_OF_CLUBS"
+        - "QUEEN_OF_CLUBS"
+        - "KING_OF_CLUBS"
+        - "ACE_OF_CLUBS"
+        - "TWO_OF_DIAMONDS"
+        - "THREE_OF_DIAMONDS"
+        - "FOUR_OF_DIAMONDS"
+        - "FIVE_OF_DIAMONDS"
+        - "SIX_OF_DIAMONDS"
+        - "SEVEN_OF_DIAMONDS"
+        - "EIGHT_OF_DIAMONDS"
+        - "NINE_OF_DIAMONDS"
+        - "TEN_OF_DIAMONDS"
+        - "JACK_OF_DIAMONDS"
+        - "QUEEN_OF_DIAMONDS"
+        - "KING_OF_DIAMONDS"
+        - "ACE_OF_DIAMONDS"
+        - "TWO_OF_HEARTS"
+        - "THREE_OF_HEARTS"
+        - "FOUR_OF_HEARTS"
+        - "FIVE_OF_HEARTS"
+        - "SIX_OF_HEARTS"
+        - "SEVEN_OF_HEARTS"
+        - "EIGHT_OF_HEARTS"
+        - "NINE_OF_HEARTS"
+        - "TEN_OF_HEARTS"
+        - "JACK_OF_HEARTS"
+        - "QUEEN_OF_HEARTS"
+        - "KING_OF_HEARTS"
+        - "ACE_OF_HEARTS"
+        - "TWO_OF_SPADES"
+        - "THREE_OF_SPADES"
+        - "FOUR_OF_SPADES"
+        - "FIVE_OF_SPADES"
+        - "SIX_OF_SPADES"
+        - "SEVEN_OF_SPADES"
+        - "EIGHT_OF_SPADES"
+        - "NINE_OF_SPADES"
+        - "TEN_OF_SPADES"
+        - "JACK_OF_SPADES"
+        - "QUEEN_OF_SPADES"
+        - "KING_OF_SPADES"
+        - "ACE_OF_SPADES"
+      flop3:
+        type: "string"
+        enum:
+        - "TWO_OF_CLUBS"
+        - "THREE_OF_CLUBS"
+        - "FOUR_OF_CLUBS"
+        - "FIVE_OF_CLUBS"
+        - "SIX_OF_CLUBS"
+        - "SEVEN_OF_CLUBS"
+        - "EIGHT_OF_CLUBS"
+        - "NINE_OF_CLUBS"
+        - "TEN_OF_CLUBS"
+        - "JACK_OF_CLUBS"
+        - "QUEEN_OF_CLUBS"
+        - "KING_OF_CLUBS"
+        - "ACE_OF_CLUBS"
+        - "TWO_OF_DIAMONDS"
+        - "THREE_OF_DIAMONDS"
+        - "FOUR_OF_DIAMONDS"
+        - "FIVE_OF_DIAMONDS"
+        - "SIX_OF_DIAMONDS"
+        - "SEVEN_OF_DIAMONDS"
+        - "EIGHT_OF_DIAMONDS"
+        - "NINE_OF_DIAMONDS"
+        - "TEN_OF_DIAMONDS"
+        - "JACK_OF_DIAMONDS"
+        - "QUEEN_OF_DIAMONDS"
+        - "KING_OF_DIAMONDS"
+        - "ACE_OF_DIAMONDS"
+        - "TWO_OF_HEARTS"
+        - "THREE_OF_HEARTS"
+        - "FOUR_OF_HEARTS"
+        - "FIVE_OF_HEARTS"
+        - "SIX_OF_HEARTS"
+        - "SEVEN_OF_HEARTS"
+        - "EIGHT_OF_HEARTS"
+        - "NINE_OF_HEARTS"
+        - "TEN_OF_HEARTS"
+        - "JACK_OF_HEARTS"
+        - "QUEEN_OF_HEARTS"
+        - "KING_OF_HEARTS"
+        - "ACE_OF_HEARTS"
+        - "TWO_OF_SPADES"
+        - "THREE_OF_SPADES"
+        - "FOUR_OF_SPADES"
+        - "FIVE_OF_SPADES"
+        - "SIX_OF_SPADES"
+        - "SEVEN_OF_SPADES"
+        - "EIGHT_OF_SPADES"
+        - "NINE_OF_SPADES"
+        - "TEN_OF_SPADES"
+        - "JACK_OF_SPADES"
+        - "QUEEN_OF_SPADES"
+        - "KING_OF_SPADES"
+        - "ACE_OF_SPADES"
+      turn:
+        type: "string"
+        enum:
+        - "TWO_OF_CLUBS"
+        - "THREE_OF_CLUBS"
+        - "FOUR_OF_CLUBS"
+        - "FIVE_OF_CLUBS"
+        - "SIX_OF_CLUBS"
+        - "SEVEN_OF_CLUBS"
+        - "EIGHT_OF_CLUBS"
+        - "NINE_OF_CLUBS"
+        - "TEN_OF_CLUBS"
+        - "JACK_OF_CLUBS"
+        - "QUEEN_OF_CLUBS"
+        - "KING_OF_CLUBS"
+        - "ACE_OF_CLUBS"
+        - "TWO_OF_DIAMONDS"
+        - "THREE_OF_DIAMONDS"
+        - "FOUR_OF_DIAMONDS"
+        - "FIVE_OF_DIAMONDS"
+        - "SIX_OF_DIAMONDS"
+        - "SEVEN_OF_DIAMONDS"
+        - "EIGHT_OF_DIAMONDS"
+        - "NINE_OF_DIAMONDS"
+        - "TEN_OF_DIAMONDS"
+        - "JACK_OF_DIAMONDS"
+        - "QUEEN_OF_DIAMONDS"
+        - "KING_OF_DIAMONDS"
+        - "ACE_OF_DIAMONDS"
+        - "TWO_OF_HEARTS"
+        - "THREE_OF_HEARTS"
+        - "FOUR_OF_HEARTS"
+        - "FIVE_OF_HEARTS"
+        - "SIX_OF_HEARTS"
+        - "SEVEN_OF_HEARTS"
+        - "EIGHT_OF_HEARTS"
+        - "NINE_OF_HEARTS"
+        - "TEN_OF_HEARTS"
+        - "JACK_OF_HEARTS"
+        - "QUEEN_OF_HEARTS"
+        - "KING_OF_HEARTS"
+        - "ACE_OF_HEARTS"
+        - "TWO_OF_SPADES"
+        - "THREE_OF_SPADES"
+        - "FOUR_OF_SPADES"
+        - "FIVE_OF_SPADES"
+        - "SIX_OF_SPADES"
+        - "SEVEN_OF_SPADES"
+        - "EIGHT_OF_SPADES"
+        - "NINE_OF_SPADES"
+        - "TEN_OF_SPADES"
+        - "JACK_OF_SPADES"
+        - "QUEEN_OF_SPADES"
+        - "KING_OF_SPADES"
+        - "ACE_OF_SPADES"
+      river:
+        type: "string"
+        enum:
+        - "TWO_OF_CLUBS"
+        - "THREE_OF_CLUBS"
+        - "FOUR_OF_CLUBS"
+        - "FIVE_OF_CLUBS"
+        - "SIX_OF_CLUBS"
+        - "SEVEN_OF_CLUBS"
+        - "EIGHT_OF_CLUBS"
+        - "NINE_OF_CLUBS"
+        - "TEN_OF_CLUBS"
+        - "JACK_OF_CLUBS"
+        - "QUEEN_OF_CLUBS"
+        - "KING_OF_CLUBS"
+        - "ACE_OF_CLUBS"
+        - "TWO_OF_DIAMONDS"
+        - "THREE_OF_DIAMONDS"
+        - "FOUR_OF_DIAMONDS"
+        - "FIVE_OF_DIAMONDS"
+        - "SIX_OF_DIAMONDS"
+        - "SEVEN_OF_DIAMONDS"
+        - "EIGHT_OF_DIAMONDS"
+        - "NINE_OF_DIAMONDS"
+        - "TEN_OF_DIAMONDS"
+        - "JACK_OF_DIAMONDS"
+        - "QUEEN_OF_DIAMONDS"
+        - "KING_OF_DIAMONDS"
+        - "ACE_OF_DIAMONDS"
+        - "TWO_OF_HEARTS"
+        - "THREE_OF_HEARTS"
+        - "FOUR_OF_HEARTS"
+        - "FIVE_OF_HEARTS"
+        - "SIX_OF_HEARTS"
+        - "SEVEN_OF_HEARTS"
+        - "EIGHT_OF_HEARTS"
+        - "NINE_OF_HEARTS"
+        - "TEN_OF_HEARTS"
+        - "JACK_OF_HEARTS"
+        - "QUEEN_OF_HEARTS"
+        - "KING_OF_HEARTS"
+        - "ACE_OF_HEARTS"
+        - "TWO_OF_SPADES"
+        - "THREE_OF_SPADES"
+        - "FOUR_OF_SPADES"
+        - "FIVE_OF_SPADES"
+        - "SIX_OF_SPADES"
+        - "SEVEN_OF_SPADES"
+        - "EIGHT_OF_SPADES"
+        - "NINE_OF_SPADES"
+        - "TEN_OF_SPADES"
+        - "JACK_OF_SPADES"
+        - "QUEEN_OF_SPADES"
+        - "KING_OF_SPADES"
+        - "ACE_OF_SPADES"
+  ErrorResponse:
     type: "object"
     properties:
       success:
         type: "boolean"
-      entity:
-        type: "object"
       message:
         type: "string"
+  GameDto:
+    type: "object"
+    properties:
+      guid:
+        type: "string"
+      code:
+        type: "string"
+      state:
+        type: "string"
+        enum:
+        - "CREATED"
+        - "IN_PROGRESS"
+        - "ENDED"
+      activeDate:
+        type: "string"
+        format: "date-time"
+      players:
+        type: "array"
+        items:
+          $ref: "#/definitions/PlayerDto"
+      setting:
+        $ref: "#/definitions/GameSettingDto"
+      currentHand:
+        $ref: "#/definitions/HandDto"
+  GameSettingDto:
+    type: "object"
+    properties:
+      type:
+        type: "string"
+        enum:
+        - "TEXAS_HOLDEM"
+        - "CRAZY_PINEAPPLE"
+      winsRequired:
+        type: "integer"
+        format: "int32"
+  HandDto:
+    type: "object"
+    properties:
+      state:
+        type: "string"
+        enum:
+        - "ACTIVE"
+        - "INACTIVE"
+      guid:
+        type: "string"
+      board:
+        $ref: "#/definitions/BoardDto"
+  JoinGameRequest:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      name:
+        type: "string"
+        minLength: 0
+        maxLength: 50
+  PlayerDto:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      guid:
+        type: "string"
+      name:
+        type: "string"
+      game:
+        $ref: "#/definitions/GameDto"
+      winCounter:
+        type: "integer"
+        format: "int32"

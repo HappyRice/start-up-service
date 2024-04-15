@@ -17,7 +17,7 @@ public class BoardDto {
     private final Card flop3;
 
     private final Card turn;
-
+    
     private final Card river;
 
     public BoardDto(final Builder builder) {

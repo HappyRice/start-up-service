@@ -12,10 +12,13 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import startup.dto.JoinGameRequest;
+import startup.exception.GameNotFoundException;
 import startup.model.Game;
 import startup.persistence.PlayerRepository;
 import startup.service.GameService;
@@ -42,25 +45,26 @@ public class PlayerControllerTest {
 	private PlayerRepository playerRepository;
 
 	@Test
-	public void joinGameOK() throws JSONException {
+	public void joinGameOK() throws JSONException, GameNotFoundException {
 		// Given
 		final String expected = "{\n" +
-				"    \"success\": true,\n" +
-				"    \"entity\": \"596f640d-184f-49ad-b19d-9a37d7a2efc8\",\n" +
-				"    \"message\": \"New player successfully joined the game\"\n" +
+				"  \"guid\": \"58733591-66b7-4621-99df-618942394f40\",\n" +
+				"  \"name\": \"John\",\n" +
+				"  \"winCounter\": 0\n" +
 				"}";
 
 		// Mock
 		when(this.gameService.getGameByCode("ABC123")).thenReturn(Game.builder().withState(CREATED).build());
 
 		// When
-		final ResponseEntity<String> response = this.restTemplate.exchange(PLAYER_PATH + "/ABC123?name=John",
-				HttpMethod.POST, null, String.class);
+		final ResponseEntity<String> response = this.restTemplate.exchange(PLAYER_PATH + "/ABC123",
+				HttpMethod.POST, new HttpEntity<>(JoinGameRequest.builder().withName("John").build()), String.class);
 
 		// Then
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
 		JSONAssert.assertEquals(expected, response.getBody(), new CustomComparator(JSONCompareMode.LENIENT,
-				new Customization("entity", (o1, o2) -> true)));
+				new Customization("id", (o1, o2) -> true),
+				new Customization("guid", (o1, o2) -> true)));
 	}
 }

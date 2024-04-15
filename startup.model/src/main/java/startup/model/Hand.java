@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "Hand")
 @NamedQueries({
-        @NamedQuery(name = "getHandByGuid", query = "SELECT hand FROM Hand as hand where guid = :guid")
+        @NamedQuery(name = "getActiveHandByGuid", query = "SELECT hand FROM Hand as hand where guid = :guid AND state != 'INACTIVE'")
 })
 public class Hand extends BaseModel {
 

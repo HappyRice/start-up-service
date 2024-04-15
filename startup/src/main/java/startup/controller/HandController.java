@@ -8,7 +8,7 @@ import org.apache.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import startup.common.dto.HandDto;
-import startup.dto.GenericResponseDto;
+import startup.dto.ErrorResponse;
 import startup.exception.GameNotFoundException;
 import startup.exception.HandNotFoundException;
 import startup.service.HandService;
@@ -29,27 +29,23 @@ public class HandController {
 
     @ApiOperation(
             value = "Creates a new hand for a game",
-            response = GenericResponseDto.class)
+            httpMethod = "POST",
+            response = HandDto.class)
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.SC_OK, message = "New hand created successfully", response = GenericResponseDto.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
-            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
+            @ApiResponse(code = HttpStatus.SC_OK, message = "New hand created successfully", response = HandDto.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "The game was not found.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Object createHand(@RequestParam final String gameGuid, final HttpServletResponse response) {
         try {
-            final HandDto hand = this.handService.createNewHand(gameGuid);
+            return this.handService.createNewHand(gameGuid);
 
-            return GenericResponseDto.builder()
-                    .withSuccess(true)
-                    .withEntity(hand.getGuid())
-                    .withMessage("New hand successfully created")
-                    .build();
         } catch (final GameNotFoundException e) {
             response.setStatus(HttpStatus.SC_NOT_FOUND);
 
-            return GenericResponseDto.builder()
-                    .withSuccess(false)
+            return ErrorResponse.builder()
                     .withMessage("Game was not found")
                     .build();
         }
@@ -57,28 +53,72 @@ public class HandController {
 
     @ApiOperation(
             value = "Creates the flop for a hand",
-            response = GenericResponseDto.class)
+            httpMethod = "POST",
+            response = HandDto.class)
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.SC_OK, message = "Flop created successfully", response = GenericResponseDto.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
-            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
+            @ApiResponse(code = HttpStatus.SC_OK, message = "Flop created successfully", response = HandDto.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "The hand was not found.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(value = "/{handGuid}/flop", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Object createFlop(@PathVariable final String handGuid, final HttpServletResponse response) {
         try {
-            final HandDto hand = this.handService.createFlop(handGuid);
+            return this.handService.createFlop(handGuid);
 
-            return GenericResponseDto.builder()
-                    .withSuccess(true)
-                    .withEntity(hand.getGuid())
-                    .withMessage("Flop successfully created")
-                    .build();
         } catch (final HandNotFoundException e) {
             response.setStatus(HttpStatus.SC_NOT_FOUND);
 
-            return GenericResponseDto.builder()
-                    .withSuccess(false)
-                    .withMessage("Game was not found")
+            return ErrorResponse.builder()
+                    .withMessage("Hand was not found")
+                    .build();
+        }
+    }
+
+    @ApiOperation(
+            value = "Creates the turn for a hand",
+            httpMethod = "POST",
+            response = HandDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.SC_OK, message = "Turn created successfully", response = HandDto.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "The hand was not found.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
+    })
+    @PostMapping(value = "/{handGuid}/turn", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Object createTurn(@PathVariable final String handGuid, final HttpServletResponse response) {
+        try {
+            return this.handService.createTurn(handGuid);
+
+        } catch (final HandNotFoundException e) {
+            response.setStatus(HttpStatus.SC_NOT_FOUND);
+
+            return ErrorResponse.builder()
+                    .withMessage("Hand was not found")
+                    .build();
+        }
+    }
+
+    @ApiOperation(
+            value = "Creates the river for a hand",
+            httpMethod = "POST",
+            response = HandDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.SC_OK, message = "River created successfully", response = HandDto.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "The hand was not found.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
+    })
+    @PostMapping(value = "/{handGuid}/river", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Object createRiver(@PathVariable final String handGuid, final HttpServletResponse response) {
+        try {
+            return this.handService.createRiver(handGuid);
+
+        } catch (final HandNotFoundException e) {
+            response.setStatus(HttpStatus.SC_NOT_FOUND);
+
+            return ErrorResponse.builder()
+                    .withMessage("Hand was not found")
                     .build();
         }
     }

@@ -6,27 +6,20 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonDeserialize(builder = GenericResponseDto.Builder.class)
-public class GenericResponseDto {
+@JsonDeserialize(builder = ErrorResponse.Builder.class)
+public class ErrorResponse {
 
     private final Boolean success;
 
-    private final Object entity;
-
     private final String message;
 
-    public GenericResponseDto(final Builder builder) {
-        this.success = builder.success;
-        this.entity = builder.entity;
+    public ErrorResponse(final Builder builder) {
         this.message = builder.message;
+        this.success = false;
     }
 
     public Boolean getSuccess() {
         return this.success;
-    }
-
-    public Object getEntity() {
-        return this.entity;
     }
 
     public String getMessage() {
@@ -40,22 +33,10 @@ public class GenericResponseDto {
     @JsonPOJOBuilder
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Builder {
-        private Boolean success;
-        private Object entity;
         private String message;
 
         private Builder(){
             // Prevent Instantiation
-        }
-
-        public Builder withSuccess(final Boolean success) {
-            this.success = success;
-            return this;
-        }
-
-        public Builder withEntity(final Object entity) {
-            this.entity = entity;
-            return this;
         }
 
         public Builder withMessage(final String message) {
@@ -63,8 +44,8 @@ public class GenericResponseDto {
             return this;
         }
 
-        public GenericResponseDto build() {
-            return new GenericResponseDto(this);
+        public ErrorResponse build() {
+            return new ErrorResponse(this);
         }
     }
 

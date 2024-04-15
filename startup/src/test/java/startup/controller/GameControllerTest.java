@@ -37,14 +37,10 @@ public class GameControllerTest {
 	@Test
 	public void getGameTypesOK() throws JSONException {
 		// Given
-		final String expected = "{\n" +
-				"    \"success\": true,\n" +
-				"    \"entity\": [\n" +
-				"        \"Texas Hold'em\",\n" +
-				"        \"Crazy Pineapple\"\n" +
-				"    ],\n" +
-				"    \"message\": \"Game types successfully returned\"\n" +
-				"}";
+		final String expected = "[\n" +
+				"  \"Texas Hold'em\",\n" +
+				"  \"Crazy Pineapple\"\n" +
+				"]";
 
 		// When
 		final ResponseEntity<String> response = this.restTemplate.exchange(GAME_PATH + "/types", HttpMethod.GET,
@@ -59,9 +55,14 @@ public class GameControllerTest {
 	public void createGameOK() throws JSONException {
 		// Given
 		final String expected = "{\n" +
-				"    \"success\": true,\n" +
-				"    \"entity\": \"c36da917-3f1f-4fa9-81f4-298573a72363\",\n" +
-				"    \"message\": \"The game was successfully created\"\n" +
+				"  \"guid\": \"122790ce-6e19-459e-8aae-c47471721bb7\",\n" +
+				"  \"code\": \"GJyGCrV9Hnty0uCgy34tYhUfl\",\n" +
+				"  \"state\": \"CREATED\",\n" +
+				"  \"players\": [],\n" +
+				"  \"setting\": {\n" +
+				"    \"type\": \"TEXAS_HOLDEM\",\n" +
+				"    \"winsRequired\": 1\n" +
+				"  }\n" +
 				"}";
 
 		// When
@@ -72,6 +73,7 @@ public class GameControllerTest {
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
 		JSONAssert.assertEquals(expected, response.getBody(), new CustomComparator(JSONCompareMode.LENIENT,
-						new Customization("entity", (o1, o2) -> true)));
+				new Customization("code", (o1, o2) -> true),
+				new Customization("guid", (o1, o2) -> true)));
 	}
 }

@@ -27,10 +27,10 @@ function create_game() {
         type: 'POST',
         contentType: 'application/json',
         success: function (data) {
-            gameId = data.entity.code;
+            gameId = data.code;
             //refreshGameBoard(data);
             console.log('Your created a game. Game code is: ' + gameId);
-            console.log('Your created a game. Game guid is: ' + data.entity.guid);
+            console.log('Your created a game. Game guid is: ' + data.guid);
         },
         error: function (error) {
             console.log(error);
@@ -48,11 +48,15 @@ function connectToSpecificGame() {
             alert('Please enter game code');
         }
         $.ajax({
-            url: url + '/player/' + gameId + '?name=' + name,
+            url: url + '/player/' + gameId,
             type: 'POST',
+            dataType: "json",
+            data: JSON.stringify({
+                "name": name
+            }),
             contentType: 'application/json',
             success: function (data) {
-                playerId = data.entity;
+                playerId = data;
                 connectToSocket(gameId);
                 console.log('Congrats you joined the game. Your player ID is: ' + playerId);
             },
