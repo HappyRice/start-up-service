@@ -7,6 +7,7 @@ host: "startup.com"
 basePath: "/v1"
 tags:
 - name: "Game"
+- name: "Hand"
 - name: "Player"
 schemes:
 - "https"
@@ -73,7 +74,7 @@ paths:
         500:
           description: "An internal server error occurred."
   /games/{gameGuid}:
-    post:
+    put:
       tags:
       - "Game"
       summary: "Starts a game"
@@ -89,6 +90,52 @@ paths:
       responses:
         200:
           description: "Game started successfully"
+          schema:
+            $ref: "#/definitions/GenericResponseDto"
+        400:
+          description: "The request was invalid."
+        500:
+          description: "An internal server error occurred."
+  /hands:
+    post:
+      tags:
+      - "Hand"
+      summary: "Creates a new hand for a game"
+      description: ""
+      operationId: "createHand"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "gameGuid"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "New hand created successfully"
+          schema:
+            $ref: "#/definitions/GenericResponseDto"
+        400:
+          description: "The request was invalid."
+        500:
+          description: "An internal server error occurred."
+  /hands/{handGuid}/flop:
+    post:
+      tags:
+      - "Hand"
+      summary: "Creates the flop for a hand"
+      description: ""
+      operationId: "createFlop"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "handGuid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Flop created successfully"
           schema:
             $ref: "#/definitions/GenericResponseDto"
         400:
