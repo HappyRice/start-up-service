@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import startup.dto.ErrorResponse;
+import startup.exception.GameNotFoundException;
+import startup.exception.HandNotFoundException;
+import startup.exception.InvalidHandStateTransitionException;
 
 @RestControllerAdvice
 public class ErrorHandlingControllerAdvice {
@@ -39,6 +42,24 @@ public class ErrorHandlingControllerAdvice {
 		}
 
 		return ErrorResponse.builder().withMessage(stringBuilder.toString()).build();
+	}
+
+	@ExceptionHandler(GameNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseBody public ErrorResponse onGameNotFoundException() {
+		return ErrorResponse.builder().withMessage("Game was not found").build();
+	}
+
+	@ExceptionHandler(HandNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseBody public ErrorResponse onHandNotFoundException() {
+		return ErrorResponse.builder().withMessage("Hand was not found").build();
+	}
+
+	@ExceptionHandler(InvalidHandStateTransitionException.class)
+	@ResponseStatus(HttpStatus.CONFLICT)
+	@ResponseBody public ErrorResponse onInvalidHandStateTransitionException() {
+		return ErrorResponse.builder().withMessage("Hand is not in the right state").build();
 	}
 
 	@ExceptionHandler(MissingServletRequestParameterException.class)

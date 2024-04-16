@@ -14,8 +14,6 @@ import startup.exception.HandNotFoundException;
 import startup.exception.InvalidHandStateTransitionException;
 import startup.service.HandService;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @CrossOrigin
 @RequestMapping("/hands")
@@ -39,23 +37,9 @@ public class HandController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Object createHand(@RequestParam final String gameGuid, final HttpServletResponse response) {
-        try {
-            return this.handService.createNewHand(gameGuid);
+    public @ResponseBody Object createHand(@RequestParam final String gameGuid) throws GameNotFoundException, InvalidHandStateTransitionException {
 
-        } catch (final GameNotFoundException e) {
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
-
-            return ErrorResponse.builder()
-                    .withMessage("Game was not found")
-                    .build();
-        } catch (final InvalidHandStateTransitionException e) {
-            response.setStatus(HttpStatus.SC_CONFLICT);
-
-            return ErrorResponse.builder()
-                    .withMessage("Hand is not in the right state")
-                    .build();
-        }
+        return this.handService.createNewHand(gameGuid);
     }
 
     @ApiOperation(
@@ -69,23 +53,9 @@ public class HandController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(value = "/{handGuid}/flop", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Object createFlop(@PathVariable final String handGuid, final HttpServletResponse response) {
-        try {
-            return this.handService.createFlop(handGuid);
+    public @ResponseBody Object createFlop(@PathVariable final String handGuid) throws HandNotFoundException, InvalidHandStateTransitionException {
 
-        } catch (final HandNotFoundException e) {
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
-
-            return ErrorResponse.builder()
-                    .withMessage("Hand was not found")
-                    .build();
-        } catch (final InvalidHandStateTransitionException e) {
-            response.setStatus(HttpStatus.SC_CONFLICT);
-
-            return ErrorResponse.builder()
-                    .withMessage("Hand is not in the right state")
-                    .build();
-        }
+        return this.handService.createFlop(handGuid);
     }
 
     @ApiOperation(
@@ -100,23 +70,9 @@ public class HandController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(value = "/{handGuid}/turn", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Object createTurn(@PathVariable final String handGuid, final HttpServletResponse response) {
-        try {
-            return this.handService.createTurn(handGuid);
+    public @ResponseBody Object createTurn(@PathVariable final String handGuid) throws HandNotFoundException, InvalidHandStateTransitionException {
 
-        } catch (final HandNotFoundException e) {
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
-
-            return ErrorResponse.builder()
-                    .withMessage("Hand was not found")
-                    .build();
-        } catch (final InvalidHandStateTransitionException e) {
-            response.setStatus(HttpStatus.SC_CONFLICT);
-
-            return ErrorResponse.builder()
-                    .withMessage("Hand is not in the right state")
-                    .build();
-        }
+        return this.handService.createTurn(handGuid);
     }
 
     @ApiOperation(
@@ -130,22 +86,8 @@ public class HandController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(value = "/{handGuid}/river", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Object createRiver(@PathVariable final String handGuid, final HttpServletResponse response) {
-        try {
-            return this.handService.createRiver(handGuid);
+    public @ResponseBody Object createRiver(@PathVariable final String handGuid) throws HandNotFoundException, InvalidHandStateTransitionException {
 
-        } catch (final HandNotFoundException e) {
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
-
-            return ErrorResponse.builder()
-                    .withMessage("Hand was not found")
-                    .build();
-        } catch (final InvalidHandStateTransitionException e) {
-            response.setStatus(HttpStatus.SC_CONFLICT);
-
-            return ErrorResponse.builder()
-                    .withMessage("Hand is not in the right state")
-                    .build();
-        }
+        return this.handService.createRiver(handGuid);
     }
 }

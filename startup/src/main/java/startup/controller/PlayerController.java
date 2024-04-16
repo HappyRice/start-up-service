@@ -10,12 +10,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import startup.common.dto.GameDto;
 import startup.common.dto.PlayerDto;
-import startup.dto.ErrorResponse;
 import startup.dto.JoinGameRequest;
 import startup.exception.GameNotFoundException;
 import startup.service.PlayerService;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @CrossOrigin
@@ -43,18 +40,10 @@ public class PlayerController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
     })
     @PostMapping(path = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Object joinGame(@PathVariable final String code, @RequestBody final JoinGameRequest joinGameRequest,
-                                         final HttpServletResponse response) {
-        try {
-            return this.playerService.joinGame(code, joinGameRequest.getName());
+    public PlayerDto joinGame(@PathVariable final String code, @RequestBody final JoinGameRequest joinGameRequest)
+            throws GameNotFoundException {
 
-        } catch (final GameNotFoundException e) {
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
-
-            return ErrorResponse.builder()
-                    .withMessage("Game was not found")
-                    .build();
-        }
+        return this.playerService.joinGame(code, joinGameRequest.getName());
     }
 
     @ApiOperation(
@@ -67,7 +56,7 @@ public class PlayerController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
     })
     @PostMapping(value = "/test", produces =  MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Object sow(@RequestParam final String playerId) {
+    public GameDto sow(@RequestParam final String playerId) {
         final GameDto game = this.playerService.test(playerId);
 
         simpMessagingTemplate.convertAndSend("/topic/game-progress/" + game.getCode(), game);

@@ -12,7 +12,7 @@ import startup.dto.ErrorResponse;
 import startup.exception.GameNotFoundException;
 import startup.service.GameService;
 
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -36,7 +36,7 @@ public class GameController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Object createGame() {
+    public GameDto createGame() {
 
         return this.gameService.createNewGame();
     }
@@ -52,7 +52,7 @@ public class GameController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @GetMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Object getGameTypes() {
+    public List<String> getGameTypes() {
 
         return this.gameService.getTypes();
     }
@@ -68,16 +68,8 @@ public class GameController {
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @GetMapping(value = "/{code}/status", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Object getStatus(@PathVariable final String code, final HttpServletResponse response) {
-        try {
-            return this.gameService.getStatus(code);
+    public GameDto getStatus(@PathVariable final String code) throws GameNotFoundException {
 
-        } catch (final GameNotFoundException e) {
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
-
-            return ErrorResponse.builder()
-                    .withMessage("Game was not found")
-                    .build();
-        }
+        return this.gameService.getStatus(code);
     }
 }
