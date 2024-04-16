@@ -38,7 +38,8 @@ public class PlayerController {
             response = PlayerDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "New player joined game successfully", response = PlayerDto.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Request was invalid."),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Game was not found."),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
     })
     @PostMapping(path = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,7 +63,7 @@ public class PlayerController {
             response = GameDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Test successfully", response = GameDto.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid."),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Request was invalid."),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.")
     })
     @PostMapping(value = "/test", produces =  MediaType.APPLICATION_JSON_VALUE)

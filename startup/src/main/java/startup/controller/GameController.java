@@ -32,7 +32,7 @@ public class GameController {
             response = GameDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Game created successfully", response = GameDto.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Request was invalid.", response = ErrorResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +48,7 @@ public class GameController {
             response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Game types returned successfully", response = String.class, responseContainer = "List"),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Request was invalid.", response = ErrorResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @GetMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,8 +63,8 @@ public class GameController {
             response = GameDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Game status returned successfully", response = GameDto.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
-            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "The game was not found.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Game was not found.", response = ErrorResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @GetMapping(value = "/{code}/status", produces = MediaType.APPLICATION_JSON_VALUE)

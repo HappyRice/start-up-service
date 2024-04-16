@@ -11,8 +11,8 @@ public class HandRepository extends BaseRepository {
         return this.getById(Hand.class, id);
     }
 
-    public Hand getActiveHandByGuid(final String guid) {
-        final Query<?> query = this.getNamedQuery("getActiveHandByGuid");
+    public Hand getHandByGuid(final String guid) {
+        final Query<?> query = this.getNamedQuery("getHandByGuid");
         query.setParameter("guid", guid);
 
         return (Hand) this.getUniqueResult(query);

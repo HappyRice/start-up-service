@@ -11,6 +11,7 @@ import startup.common.dto.HandDto;
 import startup.dto.ErrorResponse;
 import startup.exception.GameNotFoundException;
 import startup.exception.HandNotFoundException;
+import startup.exception.InvalidHandStateTransitionException;
 import startup.service.HandService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,8 +34,8 @@ public class HandController {
             response = HandDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "New hand created successfully", response = HandDto.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
-            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "The game was not found.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Game was not found.", response = ErrorResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,6 +49,12 @@ public class HandController {
             return ErrorResponse.builder()
                     .withMessage("Game was not found")
                     .build();
+        } catch (final InvalidHandStateTransitionException e) {
+            response.setStatus(HttpStatus.SC_CONFLICT);
+
+            return ErrorResponse.builder()
+                    .withMessage("Hand is not in the right state")
+                    .build();
         }
     }
 
@@ -57,8 +64,8 @@ public class HandController {
             response = HandDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Flop created successfully", response = HandDto.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
-            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "The hand was not found.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Hand was not found.", response = ErrorResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(value = "/{handGuid}/flop", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -72,6 +79,12 @@ public class HandController {
             return ErrorResponse.builder()
                     .withMessage("Hand was not found")
                     .build();
+        } catch (final InvalidHandStateTransitionException e) {
+            response.setStatus(HttpStatus.SC_CONFLICT);
+
+            return ErrorResponse.builder()
+                    .withMessage("Hand is not in the right state")
+                    .build();
         }
     }
 
@@ -81,8 +94,9 @@ public class HandController {
             response = HandDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "Turn created successfully", response = HandDto.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
-            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "The hand was not found.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Hand was not found.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_CONFLICT, message = "Hand is not in the right state.", response = ErrorResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(value = "/{handGuid}/turn", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -96,6 +110,12 @@ public class HandController {
             return ErrorResponse.builder()
                     .withMessage("Hand was not found")
                     .build();
+        } catch (final InvalidHandStateTransitionException e) {
+            response.setStatus(HttpStatus.SC_CONFLICT);
+
+            return ErrorResponse.builder()
+                    .withMessage("Hand is not in the right state")
+                    .build();
         }
     }
 
@@ -105,8 +125,8 @@ public class HandController {
             response = HandDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = HttpStatus.SC_OK, message = "River created successfully", response = HandDto.class),
-            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "The request was invalid.", response = ErrorResponse.class),
-            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "The hand was not found.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_BAD_REQUEST, message = "Request was invalid.", response = ErrorResponse.class),
+            @ApiResponse(code = HttpStatus.SC_NOT_FOUND, message = "Hand was not found.", response = ErrorResponse.class),
             @ApiResponse(code = HttpStatus.SC_INTERNAL_SERVER_ERROR, message = "An internal server error occurred.", response = ErrorResponse.class)
     })
     @PostMapping(value = "/{handGuid}/river", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -119,6 +139,12 @@ public class HandController {
 
             return ErrorResponse.builder()
                     .withMessage("Hand was not found")
+                    .build();
+        } catch (final InvalidHandStateTransitionException e) {
+            response.setStatus(HttpStatus.SC_CONFLICT);
+
+            return ErrorResponse.builder()
+                    .withMessage("Hand is not in the right state")
                     .build();
         }
     }

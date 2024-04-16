@@ -28,7 +28,7 @@ paths:
           schema:
             $ref: "#/definitions/GameDto"
         400:
-          description: "The request was invalid."
+          description: "Request was invalid."
           schema:
             $ref: "#/definitions/ErrorResponse"
         500:
@@ -53,7 +53,7 @@ paths:
             items:
               type: "string"
         400:
-          description: "The request was invalid."
+          description: "Request was invalid."
           schema:
             $ref: "#/definitions/ErrorResponse"
         500:
@@ -80,11 +80,11 @@ paths:
           schema:
             $ref: "#/definitions/GameDto"
         400:
-          description: "The request was invalid."
+          description: "Request was invalid."
           schema:
             $ref: "#/definitions/ErrorResponse"
         404:
-          description: "The game was not found."
+          description: "Game was not found."
           schema:
             $ref: "#/definitions/ErrorResponse"
         500:
@@ -111,11 +111,11 @@ paths:
           schema:
             $ref: "#/definitions/HandDto"
         400:
-          description: "The request was invalid."
+          description: "Request was invalid."
           schema:
             $ref: "#/definitions/ErrorResponse"
         404:
-          description: "The game was not found."
+          description: "Game was not found."
           schema:
             $ref: "#/definitions/ErrorResponse"
         500:
@@ -142,11 +142,11 @@ paths:
           schema:
             $ref: "#/definitions/HandDto"
         400:
-          description: "The request was invalid."
+          description: "Request was invalid."
           schema:
             $ref: "#/definitions/ErrorResponse"
         404:
-          description: "The hand was not found."
+          description: "Hand was not found."
           schema:
             $ref: "#/definitions/ErrorResponse"
         500:
@@ -173,11 +173,11 @@ paths:
           schema:
             $ref: "#/definitions/HandDto"
         400:
-          description: "The request was invalid."
+          description: "Request was invalid."
           schema:
             $ref: "#/definitions/ErrorResponse"
         404:
-          description: "The hand was not found."
+          description: "Hand was not found."
           schema:
             $ref: "#/definitions/ErrorResponse"
         500:
@@ -204,11 +204,15 @@ paths:
           schema:
             $ref: "#/definitions/HandDto"
         400:
-          description: "The request was invalid."
+          description: "Request was invalid."
           schema:
             $ref: "#/definitions/ErrorResponse"
         404:
-          description: "The hand was not found."
+          description: "Hand was not found."
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        409:
+          description: "Hand is not in the right state."
           schema:
             $ref: "#/definitions/ErrorResponse"
         500:
@@ -235,7 +239,7 @@ paths:
           schema:
             $ref: "#/definitions/GameDto"
         400:
-          description: "The request was invalid."
+          description: "Request was invalid."
         500:
           description: "An internal server error occurred."
   /players/{code}:
@@ -263,7 +267,9 @@ paths:
           schema:
             $ref: "#/definitions/PlayerDto"
         400:
-          description: "The request was invalid."
+          description: "Request was invalid."
+        404:
+          description: "Game was not found."
         500:
           description: "An internal server error occurred."
 definitions:
@@ -593,8 +599,10 @@ definitions:
       state:
         type: "string"
         enum:
-        - "ACTIVE"
-        - "INACTIVE"
+        - "PREFLOP"
+        - "FLOP"
+        - "TURN"
+        - "RIVER"
       guid:
         type: "string"
       board:
