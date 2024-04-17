@@ -34,26 +34,18 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game getGameByGuid(final String guid) throws GameNotFoundException {
-        final Optional<Game> gameOpt = Optional.ofNullable(this.gameRepository.getGameByGuid(guid));
-
-        if (gameOpt.isPresent()) {
-            return gameOpt.get();
-        } else {
+        return Optional.ofNullable(this.gameRepository.getGameByGuid(guid)).orElseThrow(() -> {
             LOGGER.warn("No game found for guid: [{}]", guid);
-            throw new GameNotFoundException();
-        }
+            return new GameNotFoundException();
+        });
     }
 
     @Override
     public Game getGameByCode(final String code) throws GameNotFoundException {
-        final Optional<Game> gameOpt = Optional.ofNullable(this.gameRepository.getGameByCode(code));
-
-        if (gameOpt.isPresent()) {
-            return gameOpt.get();
-        } else {
+        return Optional.ofNullable(this.gameRepository.getGameByCode(code)).orElseThrow(() -> {
             LOGGER.warn("No game found for code: [{}]", code);
-            throw new GameNotFoundException();
-        }
+            return new GameNotFoundException();
+        });
     }
 
     @Override

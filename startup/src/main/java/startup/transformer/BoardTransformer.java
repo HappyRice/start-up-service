@@ -14,17 +14,16 @@ public final class BoardTransformer {
     public static BoardDto buildBoardDto(final Board board) {
         final Optional<Board> boardOpt = Optional.ofNullable(board);
 
-        if (boardOpt.isPresent()) {
-            return BoardDto.builder()
-                    .withFlop1(board.getFlop1())
-                    .withFlop2(board.getFlop2())
-                    .withFlop3(board.getFlop3())
-                    .withTurn(board.getTurn())
-                    .withRiver(board.getRiver())
-                    .build();
-        } else {
-            return null;
-        }
+        return boardOpt.map(
+                b -> BoardDto.builder()
+                        .withFlop1(board.getFlop1())
+                        .withFlop2(board.getFlop2())
+                        .withFlop3(board.getFlop3())
+                        .withTurn(board.getTurn())
+                        .withRiver(board.getRiver())
+                        .build()
+                )
+                .orElse(null);
     }
 
 }

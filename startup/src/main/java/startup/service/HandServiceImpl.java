@@ -68,7 +68,7 @@ public class HandServiceImpl implements HandService {
         final Hand hand = Hand.builder()
                 .withGame(game)
                 .withState(HandState.PREFLOP)
-                .withHandNumber(currentHandOpt.map(value -> value.getHandNumber() + 1).orElse(1))
+                .withHandNumber(currentHandOpt.map(currentHand -> currentHand.getHandNumber() + 1).orElse(1))
                 .build();
 
         game.setCurrentHand(hand);
@@ -193,13 +193,9 @@ public class HandServiceImpl implements HandService {
     }
 
     private Hand getHandByGuid(final String guid) throws HandNotFoundException{
-        final Optional<Hand> handOpt = Optional.ofNullable(this.handRepository.getHandByGuid(guid));
-
-        if (handOpt.isPresent()) {
-            return handOpt.get();
-        } else {
-            LOGGER.warn("No hand found with guid: [{}]", guid);
-            throw new HandNotFoundException();
-        }
+        return Optional.ofNullable(this.handRepository.getHandByGuid(guid)).orElseThrow(() -> {
+            LOGGER.warn("No hand found for guid: [{}]", guid);
+            return new HandNotFoundException();
+        });
     }
 }

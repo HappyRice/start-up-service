@@ -605,6 +605,9 @@ definitions:
         - "RIVER"
       guid:
         type: "string"
+      handNumber:
+        type: "integer"
+        format: "int32"
       board:
         $ref: "#/definitions/BoardDto"
   JoinGameRequest:
