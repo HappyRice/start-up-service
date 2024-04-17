@@ -12,15 +12,10 @@ public final class HandTransformer {
     }
 
     public static HandDto buildHandDto(final Hand hand) {
-        final Optional<Hand> handOpt = Optional.ofNullable(hand);
-
-        return handOpt.map(
-                h -> HandDto.builder()
-                        .withState(hand.getState())
-                        .withBoard(BoardTransformer.buildBoardDto(hand.getBoard()))
-                        .build()
-                )
-                .orElse(null);
+        return Optional.ofNullable(hand).map(h -> HandDto.builder()
+                .withState(hand.getState())
+                .withBoard(BoardTransformer.buildBoardDto(hand.getBoard()))
+                .build()).orElse(null);
     }
 
 }
