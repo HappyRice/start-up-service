@@ -3,6 +3,8 @@ package startup.transformer;
 import startup.common.dto.BoardDto;
 import startup.model.Board;
 
+import java.util.Optional;
+
 public final class BoardTransformer {
 
     private BoardTransformer() {
@@ -10,7 +12,9 @@ public final class BoardTransformer {
     }
 
     public static BoardDto buildBoardDto(final Board board) {
-        if (board != null) {
+        final Optional<Board> boardOpt = Optional.ofNullable(board);
+
+        if (boardOpt.isPresent()) {
             return BoardDto.builder()
                     .withFlop1(board.getFlop1())
                     .withFlop2(board.getFlop2())

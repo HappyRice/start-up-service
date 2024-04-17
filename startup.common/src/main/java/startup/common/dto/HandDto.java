@@ -14,11 +14,14 @@ public class HandDto {
 
     private final String guid;
 
+    private final Integer handNumber;
+
     private final BoardDto board;
 
     public HandDto(final Builder builder) {
         this.state = builder.state;
         this.guid = builder.guid;
+        this.handNumber = builder.handNumber;
         this.board = builder.board;
     }
 
@@ -28,6 +31,10 @@ public class HandDto {
 
     public String getGuid() {
         return this.guid;
+    }
+
+    public Integer getHandNumber() {
+        return this.handNumber;
     }
 
     public BoardDto getBoard() {
@@ -43,6 +50,7 @@ public class HandDto {
     public static class Builder {
         private HandState state;
         private String guid;
+        private Integer handNumber;
         private BoardDto board;
 
         private Builder() {
@@ -56,6 +64,11 @@ public class HandDto {
 
         public Builder withGuid(final String guid) {
             this.guid = guid;
+            return this;
+        }
+
+        public Builder withHandNumber(final Integer handNumber) {
+            this.handNumber = handNumber;
             return this;
         }
 

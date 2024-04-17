@@ -10,16 +10,13 @@ import startup.common.enumeration.Card;
 import startup.common.enumeration.HandState;
 import startup.exception.GameNotFoundException;
 import startup.exception.HandNotFoundException;
-import startup.exception.InvalidHandStateTransitionException;
+import startup.exception.InvalidHandStateException;
 import startup.model.*;
 import startup.persistence.HandRepository;
 import startup.transformer.HandTransformer;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static startup.common.enumeration.GameState.IN_PROGRESS;
 import static startup.common.enumeration.HandState.*;
@@ -41,7 +38,7 @@ public class HandServiceImpl implements HandService {
 
     @Override
     @Transactional
-    public HandDto createNewHand(final String gameGuid) throws GameNotFoundException, InvalidHandStateTransitionException {
+    public HandDto createNewHand(final String gameGuid) throws GameNotFoundException, InvalidHandStateException {
         final Game game = this.gameService.getGameByGuid(gameGuid);
 
         // Check game status
@@ -55,7 +52,7 @@ public class HandServiceImpl implements HandService {
             case IN_PROGRESS:
                 if (game.getCurrentHand().getState().getFromState() != RIVER) {
                     LOGGER.warn("New hand can't be created for game with guid: [{}]", gameGuid);
-                    throw new InvalidHandStateTransitionException();
+                    throw new InvalidHandStateException();
                 }
                 break;
 
@@ -66,9 +63,12 @@ public class HandServiceImpl implements HandService {
 
         LOGGER.info("Creating new hand for game with guid: [{}]", game.getGuid());
 
+        final Optional<Hand> currentHandOpt = Optional.ofNullable(game.getCurrentHand());
+
         final Hand hand = Hand.builder()
                 .withGame(game)
                 .withState(HandState.PREFLOP)
+                .withHandNumber(currentHandOpt.map(value -> value.getHandNumber() + 1).orElse(1))
                 .build();
 
         game.setCurrentHand(hand);
@@ -85,12 +85,12 @@ public class HandServiceImpl implements HandService {
 
     @Override
     @Transactional
-    public HandDto createFlop(final String handGuid) throws HandNotFoundException, InvalidHandStateTransitionException {
+    public HandDto createFlop(final String handGuid) throws HandNotFoundException, InvalidHandStateException {
         final Hand hand = this.getHandByGuid(handGuid);
 
         if (hand.getState().getFromState() != PREFLOP) {
             LOGGER.warn("Flop can't be created for hand with guid: [{}]", hand.getGuid());
-            throw new InvalidHandStateTransitionException();
+            throw new InvalidHandStateException();
         }
 
         LOGGER.info("Creating flop for hand with guid: [{}]", hand.getGuid());
@@ -116,12 +116,12 @@ public class HandServiceImpl implements HandService {
 
     @Override
     @Transactional
-    public HandDto createTurn(final String handGuid) throws HandNotFoundException, InvalidHandStateTransitionException {
+    public HandDto createTurn(final String handGuid) throws HandNotFoundException, InvalidHandStateException {
         final Hand hand = this.getHandByGuid(handGuid);
 
         if (hand.getState().getFromState() != FLOP) {
             LOGGER.warn("Turn can't be created for hand with guid: [{}]", hand.getGuid());
-            throw new InvalidHandStateTransitionException();
+            throw new InvalidHandStateException();
         }
 
         LOGGER.info("Creating turn for hand with guid: [{}]", hand.getGuid());
@@ -140,12 +140,12 @@ public class HandServiceImpl implements HandService {
 
     @Override
     @Transactional
-    public HandDto createRiver(final String handGuid) throws HandNotFoundException, InvalidHandStateTransitionException {
+    public HandDto createRiver(final String handGuid) throws HandNotFoundException, InvalidHandStateException {
         final Hand hand = this.getHandByGuid(handGuid);
 
         if (hand.getState().getFromState() != TURN) {
             LOGGER.warn("River can't be created for hand with guid: [{}]", hand.getGuid());
-            throw new InvalidHandStateTransitionException();
+            throw new InvalidHandStateException();
         }
 
         LOGGER.info("Creating river for hand with guid: [{}]", hand.getGuid());
@@ -193,13 +193,13 @@ public class HandServiceImpl implements HandService {
     }
 
     private Hand getHandByGuid(final String guid) throws HandNotFoundException{
-        final Hand hand = this.handRepository.getHandByGuid(guid);
+        final Optional<Hand> handOpt = Optional.ofNullable(this.handRepository.getHandByGuid(guid));
 
-        if (hand == null) {
+        if (handOpt.isPresent()) {
+            return handOpt.get();
+        } else {
             LOGGER.warn("No hand found with guid: [{}]", guid);
             throw new HandNotFoundException();
         }
-
-        return hand;
     }
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import startup.dto.ErrorResponse;
 import startup.exception.GameNotFoundException;
 import startup.exception.HandNotFoundException;
-import startup.exception.InvalidHandStateTransitionException;
+import startup.exception.InvalidHandStateException;
 
 @RestControllerAdvice
 public class ErrorHandlingControllerAdvice {
@@ -56,7 +56,7 @@ public class ErrorHandlingControllerAdvice {
 		return ErrorResponse.builder().withMessage("Hand was not found").build();
 	}
 
-	@ExceptionHandler(InvalidHandStateTransitionException.class)
+	@ExceptionHandler(InvalidHandStateException.class)
 	@ResponseStatus(HttpStatus.CONFLICT)
 	@ResponseBody public ErrorResponse onInvalidHandStateTransitionException() {
 		return ErrorResponse.builder().withMessage("Hand is not in the right state").build();

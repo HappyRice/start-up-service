@@ -43,6 +43,9 @@ public class Hand extends BaseModel {
     @Where(clause = "deletedDate IS NULL")
     private List<PlayerHand> playerHands = new ArrayList<>();
 
+    @Column
+    private Integer handNumber;
+
     public Hand() {
     }
 
@@ -53,6 +56,7 @@ public class Hand extends BaseModel {
         this.cards = builder.cards != null ? builder.cards : new ArrayList<>();
         this.board = builder.board;
         this.playerHands = builder.playerHands != null ? builder.build().playerHands : new ArrayList<>();
+        this.handNumber = builder.handNumber;
     }
 
     public Player getWinner() {
@@ -103,6 +107,14 @@ public class Hand extends BaseModel {
         this.playerHands = playerHands;
     }
 
+    public Integer getHandNumber() {
+        return this.handNumber;
+    }
+
+    public void setHandNumber(final Integer handNumber) {
+        this.handNumber = handNumber;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -114,6 +126,7 @@ public class Hand extends BaseModel {
         private List<Card> cards;
         private Board board;
         private List<PlayerHand> playerHands;
+        private Integer handNumber;
 
         private Builder() {
             // Prevent Instantiation
@@ -146,6 +159,11 @@ public class Hand extends BaseModel {
 
         public Builder withPlayerHands(final List<PlayerHand> playerHands) {
             this.playerHands = playerHands;
+            return this;
+        }
+
+        public Builder withHandNumber(final Integer handNumber) {
+            this.handNumber = handNumber;
             return this;
         }
 
