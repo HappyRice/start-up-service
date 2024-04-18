@@ -1,6 +1,5 @@
 package startup.model;
 
-import org.hibernate.annotations.FilterJoinTable;
 import startup.common.enumeration.Card;
 
 import javax.persistence.*;
@@ -11,7 +10,6 @@ public class Board extends BaseModel {
 
     @OneToOne
     @JoinColumn(name = "handId")
-    @FilterJoinTable(name = "notDeleted", condition = "deletedDate IS NULL")
     private Hand hand;
 
     @Column
@@ -71,7 +69,7 @@ public class Board extends BaseModel {
     }
 
     public Card getFlop3() {
-        return this.flop1;
+        return this.flop3;
     }
 
     public void setFlop3(final Card flop3) {

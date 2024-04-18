@@ -13,6 +13,8 @@ import startup.persistence.PlayerRepository;
 import startup.transformer.GameTransformer;
 import startup.transformer.PlayerTransformer;
 
+import java.util.Optional;
+
 import static startup.common.enumeration.GameState.CREATED;
 
 @Service
@@ -54,14 +56,14 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     @Transactional
     public GameDto test(final String playerGuid) {
-        final Player player = this.getPlayerByGuid(playerGuid);
-        final Game game = player.getGame();
+        final Optional<Player> player = this.getPlayerByGuid(playerGuid);
+        final Game game = player.get().getGame();
         game.getSetting().setWinsRequired(game.getSetting().getWinsRequired() + 1);
 
-        return GameTransformer.buildGameDtoWithPlayersAndHand(player.getGame());
+        return GameTransformer.buildGameDtoWithPlayersAndHand(player.get().getGame());
     }
 
-    private Player getPlayerByGuid(final String guid) {
+    private Optional<Player> getPlayerByGuid(final String guid) {
         return this.playerRepository.getPlayerByGuid(guid);
     }
 }

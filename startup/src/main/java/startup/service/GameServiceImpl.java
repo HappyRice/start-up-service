@@ -15,7 +15,6 @@ import startup.transformer.GameTransformer;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static startup.common.enumeration.GameState.CREATED;
@@ -34,7 +33,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game getGameByGuid(final String guid) throws GameNotFoundException {
-        return Optional.ofNullable(this.gameRepository.getGameByGuid(guid)).orElseThrow(() -> {
+        return this.gameRepository.getGameByGuid(guid).orElseThrow(() -> {
             LOGGER.warn("No game found for guid: [{}]", guid);
             return new GameNotFoundException();
         });
@@ -42,7 +41,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game getGameByCode(final String code) throws GameNotFoundException {
-        return Optional.ofNullable(this.gameRepository.getGameByCode(code)).orElseThrow(() -> {
+        return this.gameRepository.getGameByCode(code).orElseThrow(() -> {
             LOGGER.warn("No game found for code: [{}]", code);
             return new GameNotFoundException();
         });

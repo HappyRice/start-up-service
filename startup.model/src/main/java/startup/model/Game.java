@@ -1,6 +1,6 @@
 package startup.model;
 
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.Filter;
 import startup.common.enumeration.GameState;
 
 import javax.persistence.*;
@@ -31,11 +31,10 @@ public class Game extends BaseModel {
     private Player winner;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
-    @Where(clause = "deletedDate IS NULL")
+    @Filter(name = "notDeleted")
     private List<Player> players = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "game")
-    @Where(clause = "deletedDate IS NULL")
     private GameSetting setting;
 
     @OneToOne(cascade = CascadeType.ALL)

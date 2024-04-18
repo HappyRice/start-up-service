@@ -1,7 +1,5 @@
 package startup.model;
 
-import org.hibernate.annotations.FilterJoinTable;
-
 import javax.persistence.*;
 
 @Entity
@@ -16,7 +14,6 @@ public class Player extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name = "gameId")
-    @FilterJoinTable(name = "notDeleted", condition = "deletedDate IS NULL")
     private Game game;
 
     @Column

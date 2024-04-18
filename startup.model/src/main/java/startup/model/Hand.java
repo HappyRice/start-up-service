@@ -1,7 +1,6 @@
 package startup.model;
 
-import org.hibernate.annotations.FilterJoinTable;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.Filter;
 import startup.common.enumeration.Card;
 import startup.common.enumeration.HandState;
 
@@ -22,7 +21,6 @@ public class Hand extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name = "gameId")
-    @FilterJoinTable(name = "notDeleted", condition = "deletedDate IS NULL")
     private Game game;
 
     @Column
@@ -36,11 +34,10 @@ public class Hand extends BaseModel {
     private List<Card> cards = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "hand")
-    @Where(clause = "deletedDate IS NULL")
     private Board board;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hand")
-    @Where(clause = "deletedDate IS NULL")
+    @Filter(name = "notDeleted")
     private List<PlayerHand> playerHands = new ArrayList<>();
 
     @Column

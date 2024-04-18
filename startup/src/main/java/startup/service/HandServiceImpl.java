@@ -193,7 +193,7 @@ public class HandServiceImpl implements HandService {
     }
 
     private Hand getHandByGuid(final String guid) throws HandNotFoundException{
-        return Optional.ofNullable(this.handRepository.getHandByGuid(guid)).orElseThrow(() -> {
+        return this.handRepository.getHandByGuid(guid).orElseThrow(() -> {
             LOGGER.warn("No hand found for guid: [{}]", guid);
             return new HandNotFoundException();
         });

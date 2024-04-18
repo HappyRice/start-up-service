@@ -1,6 +1,5 @@
 package startup.model;
 
-import org.hibernate.annotations.FilterJoinTable;
 import startup.common.enumeration.GameType;
 
 import javax.persistence.*;
@@ -18,7 +17,6 @@ public class GameSetting extends BaseModel {
 
     @OneToOne
     @JoinColumn(name = "gameId")
-    @FilterJoinTable(name = "notDeleted", condition = "deletedDate IS NULL")
     private Game game;
 
     public GameSetting() {

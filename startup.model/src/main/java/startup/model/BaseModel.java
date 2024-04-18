@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @MappedSuperclass
-@FilterDef(name = "notDeleted")
-@Filters({ @Filter(name = "notDeleted", condition = "deletedDate IS NULL") })
+@FilterDef(name = "notDeleted", defaultCondition = "deletedDate is NULL")
+@Filters({ @Filter(name = "notDeleted") })
 public abstract class BaseModel {
 
     @Id

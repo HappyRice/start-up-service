@@ -1,6 +1,5 @@
 package startup.model;
 
-import org.hibernate.annotations.FilterJoinTable;
 import startup.common.enumeration.Card;
 
 import javax.persistence.*;
@@ -11,12 +10,10 @@ public class PlayerHand extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name = "handId")
-    @FilterJoinTable(name = "notDeleted", condition = "deletedDate IS NULL")
     private Hand hand;
 
     @ManyToOne
     @JoinColumn(name = "playerId")
-    @FilterJoinTable(name = "notDeleted", condition = "deletedDate IS NULL")
     private Player player;
 
     @Column
